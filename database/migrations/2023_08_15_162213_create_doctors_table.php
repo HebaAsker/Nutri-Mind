@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('national_id');
-            $table->string('gender');
+            $table->enum('gender',['male','female'])->default('male');
             $table->string('qualification');
             $table->string('experience_years');
             $table->string('appointments');
             $table->string('image')->default('profile.png');
-            $table->string('rate')->nullable();
+            $table->integer('rate')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();

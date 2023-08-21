@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Chat;
 use App\Models\Doctor;
 use App\Models\SocialAccount;
 use Laravel\Passport\HasApiTokens;
@@ -39,7 +40,13 @@ class Patient extends Authenticatable
         return $this->belongsToMany(Doctor::class,'doctors');
     }
 
-    public function socialAccounts() : HasMany{
+    public function socialAccounts() : HasMany
+    {
         return $this->hasMany(SocialAccount::class);
+    }
+
+    public function chats(): HasMany
+    {
+        return $this->hasMany(Chat::class, 'created_by');
     }
 }
