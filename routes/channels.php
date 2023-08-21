@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('App.Models.Doctor.{id}', function ($doctor, $id) {
+    return (int) $doctor->id === (int) $id;
+});
+
+Broadcast::channel('App.Models.Patient.{id}', function ($patient, $id) {
+    return (int) $patient->id === (int) $id;
+});
+
+Broadcast::channel('chat-message.{doctor_id}', function ($doctor, $doctor_id) {
+    return (int) $doctor->id === (int) $doctor_id;
+});
+
+Broadcast::channel('chat-message.{patient_id}', function ($patient, $patient_id) {
+    return (int) $patient->id === (int) $patient_id;
 });
