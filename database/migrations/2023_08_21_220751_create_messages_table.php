@@ -6,17 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
+
     public function up(): void
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('chat_id')->references('id')->on('chats')->onDelete('cascade');
             $table->string('content');
-            $table->enum('status',['read','unread'])->default('unread');
-            $table->foreignId('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
-            $table->foreignId('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->enum('status',['read','unread'])->default('unread')->nullable();
+            $table->string('sender_name');
+            $table->string('receiver_name');
             $table->timestamps();
         });
     }
@@ -28,4 +28,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('messages');
     }
+
 };

@@ -24,6 +24,12 @@ class Doctor extends Authenticatable
         'image',
         'phone',
         'rate',
+        'national_id',
+        'qualification',
+        'experience_years',
+        'appointments',
+
+
     ];
 
 
@@ -50,8 +56,5 @@ class Doctor extends Authenticatable
         return $this->hasMany(SocialAccount::class);
     }
 
-    public function chats(): HasMany
-    {
-        return $this->hasMany(Chat::class, 'created_by');
-    }
+
 }

@@ -23,7 +23,7 @@ class MessageRequest extends FormRequest
     {
         return [
             'content' =>'required',
-            'status' => 'required',
+            'receiver_name' => 'required',
 
         ];
     }

@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Message;
+use App\Models\Chat;
 use Illuminate\Database\Seeder;
 
 
-class MessageSeeder extends Seeder
+class ChatSeeder extends Seeder
 {
 
     public function run(): void
     {
-        Message::factory()->count(6)->create();
+        Chat::factory()->count(6)->create();
     }
 }

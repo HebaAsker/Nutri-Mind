@@ -16,11 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('address');
             $table->string('national_id');
             $table->enum('gender',['male','female'])->default('male');
             $table->string('qualification');
-            $table->string('experience_years');
+            $table->integer('experience_years');
             $table->string('appointments');
             $table->string('image')->default('profile.png');
             $table->integer('rate')->nullable();

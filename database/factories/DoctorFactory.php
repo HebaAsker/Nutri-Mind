@@ -21,7 +21,6 @@ class DoctorFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'image' => fake()->image,
             'rate' => fake()->randomElement([1,2,3,4,5]),
-            'address' => fake()->address(),
             'gender' => fake()->randomElement(['male', 'female']),
             'qualification' => fake()->sentence(10),
             'national_id' => fake()->phoneNumber(),

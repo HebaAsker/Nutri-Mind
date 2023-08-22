@@ -45,8 +45,5 @@ class Patient extends Authenticatable
         return $this->hasMany(SocialAccount::class);
     }
 
-    public function chats(): HasMany
-    {
-        return $this->hasMany(Chat::class, 'created_by');
-    }
+
 }

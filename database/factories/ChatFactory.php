@@ -8,18 +8,16 @@ use App\Models\Message;
 use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class MessageFactory extends Factory
+class ChatFactory extends Factory
 {
 
 
-    protected $model = Message::class;
+    protected $model = Chat::class;
 
     public function definition(): array
     {
         return [
-            'chat_id' => Chat::all()->random()->id,
-            'status' => fake()->randomElement(['read','unread']),
-            'content' => fake()->sentence(10),
+            'last_seen' => fake()->date('Y-m-d H:i:s'),
             'sender_name' => Doctor::all()->random()->name,
             'receiver_name' => Patient::all()->random()->name,
         ];
