@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+<<<<<<< HEAD
 use Laravel\Passport\Passport;
+=======
+>>>>>>> 500c997b32e9126b6193db74114324d168009175
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -22,10 +25,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+<<<<<<< HEAD
         //guard scope
         Passport::tokensCan([
             'doctor' => 'For Doctor',
             'patient' => 'For Patient',
         ]);
+=======
+        //
+>>>>>>> 500c997b32e9126b6193db74114324d168009175
     }
 }

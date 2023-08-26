@@ -160,6 +160,7 @@ return [
          * Package Service Providers...
          */
 
+<<<<<<< HEAD
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -184,12 +185,18 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
 
+=======
+>>>>>>> 500c997b32e9126b6193db74114324d168009175
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+<<<<<<< HEAD
         App\Providers\BroadcastServiceProvider::class,
+=======
+        // App\Providers\BroadcastServiceProvider::class,
+>>>>>>> 500c997b32e9126b6193db74114324d168009175
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
