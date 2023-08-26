@@ -19,10 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DoctorSeeder::class,
             PatientSeeder::class,
-<<<<<<< HEAD
             ChatSeeder::class,
-=======
->>>>>>> aa22e7d0d2ea83fc3861372d5f4a83f8dfbe9b22
             MessageSeeder::class,
         ]);
     }

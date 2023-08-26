@@ -36,6 +36,11 @@ class DoctorAuthenticationController extends Controller
             'password' => Hash::make($request->password),
             'image' => $file_name,
             'phone' => $request->phone,
+            'rate' =>  $request->rate,
+            'national_id'=> $request->national_id,
+            'qualification' => $request->qualification,
+            'experience_years' => $request->experience_years,
+            'appointments' => $request->appointments,
         ]);
 
         //create token
