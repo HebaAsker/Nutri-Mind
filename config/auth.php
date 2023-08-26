@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< HEAD
 use App\Models\Doctor;
 use App\Models\Patient;
 
@@ -9,31 +8,12 @@ return [
     'defaults' => [
         'guard' => 'patient',
         'passwords' => 'patients',
-=======
-return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Defaults
-    |--------------------------------------------------------------------------
-    |
-    | This option controls the default authentication "guard" and password
-    | reset options for your application. You may change these defaults
-    | as required, but they're a perfect start for most applications.
-    |
-    */
-
-    'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
->>>>>>> 500c997b32e9126b6193db74114324d168009175
     ],
 
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
-<<<<<<< HEAD
     */
 
     'guards' => [
@@ -46,25 +26,6 @@ return [
         'patient' => [
             'driver' => 'passport',
             'provider' => 'patients',
-=======
-    |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | here which uses session storage and the Eloquent user provider.
-    |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
-    |
-    | Supported: "session"
-    |
-    */
-
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
->>>>>>> 500c997b32e9126b6193db74114324d168009175
         ],
     ],
 
@@ -86,7 +47,6 @@ return [
     */
 
     'providers' => [
-<<<<<<< HEAD
         'doctors' => [
             'driver' => 'eloquent',
             'model' => Doctor::class,
@@ -100,19 +60,6 @@ return [
     ],
 
 
-=======
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
-    ],
-
->>>>>>> 500c997b32e9126b6193db74114324d168009175
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords
@@ -133,7 +80,6 @@ return [
     */
 
     'passwords' => [
-<<<<<<< HEAD
 
         'doctors' => [
             'provider' => 'doctors',
@@ -144,10 +90,6 @@ return [
 
         'patients' => [
             'provider' => 'patients',
-=======
-        'users' => [
-            'provider' => 'users',
->>>>>>> 500c997b32e9126b6193db74114324d168009175
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

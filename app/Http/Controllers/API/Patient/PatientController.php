@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\API\Patient;
 
-use App\Http\Controllers\Controller;
 use App\Models\Doctor;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+
 
 class PatientController extends Controller
 {
@@ -16,6 +19,15 @@ class PatientController extends Controller
     //display specific doctor information page when patient click on doctor profile
     public function show($id){
         $doctor = Doctor::findOrFail($id);
+        return $doctor;
+    }
+
+    //Search for specific doctor page in search box
+    public function search(Request $request){
+        $filter = $request->name;
+        $doctor = Doctor::query()
+            ->where('name', 'LIKE', "%{$filter}%")
+            ->get();
         return $doctor;
     }
 }

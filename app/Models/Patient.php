@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Chat;
 use App\Models\Doctor;
@@ -46,12 +45,4 @@ class Patient extends Authenticatable
         return $this->hasMany(SocialAccount::class);
     }
 
-=======
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Patient extends Model
-{
-    use HasFactory;
->>>>>>> 500c997b32e9126b6193db74114324d168009175
 }
