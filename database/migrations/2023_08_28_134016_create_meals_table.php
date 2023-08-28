@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('meals', function (Blueprint $table) {
             $table->id();
-            $table->decimal('price');
-            $table->enum('status',['paid','not paid','partially paid']);
-            $table->string('card_number',16);
-            $table->string('CVV',3);
-            $table->date('ex_date');
-            $table->string('payment_method');
-            $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->integer('calories');
+            $table->integer('protein');
+            $table->integer('fats');
+            $table->integer('carbs');
+            $table->time('time');
+            $table->date('date');
+            $table->enum('type',['dinner','breakfast','lunch']);
+            $table->string('image');
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('meals');
     }
 };

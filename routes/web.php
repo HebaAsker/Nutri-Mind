@@ -33,10 +33,3 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('notes',NoteController::class);
-Route::resource('reviews',ReviewController::class);
-Route::resource('doctor_work_times',DoctorWorkTimeController::class);
-Route::resource('payment',PaymentController::class);
-Route::resource('appointment',AppointmentController::class);
-
-require __DIR__.'/auth.php';

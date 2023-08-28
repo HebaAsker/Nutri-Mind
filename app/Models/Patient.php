@@ -22,6 +22,8 @@ class Patient extends Authenticatable
         'email',
         'password',
         'image',
+        'weight',
+        'height',
     ];
 
     protected $hidden = [
