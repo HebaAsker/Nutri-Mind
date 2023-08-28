@@ -13,13 +13,20 @@ class PatientController extends Controller
     // display some doctors in user home page
     public function index(){
         $doctors = Doctor::paginate(8);
-        return $doctors;
+        return response([
+            'status' => true,
+            $doctors
+        ]);
+
     }
 
     //display specific doctor information page when patient click on doctor profile
     public function show($id){
         $doctor = Doctor::findOrFail($id);
-        return $doctor;
+        return response([
+            'status' => true,
+            $doctor
+        ]);
     }
 
     //Search for specific doctor page in search box
@@ -28,6 +35,9 @@ class PatientController extends Controller
         $doctor = Doctor::query()
             ->where('name', 'LIKE', "%{$filter}%")
             ->get();
-        return $doctor;
+        return response([
+            'status' => true,
+            $doctor
+        ]);
     }
 }

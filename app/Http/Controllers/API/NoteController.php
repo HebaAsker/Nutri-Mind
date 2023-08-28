@@ -18,15 +18,6 @@ class NoteController extends Controller
     {
         $notes = Note::all()->sortByDesc('updated_at');
         return $this->returnData('notes', $notes);
-        // return view('notes.index',compact('notes'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('notes.create');
     }
 
     /**
@@ -80,7 +71,6 @@ class NoteController extends Controller
     public function edit(Note $note)
     {
         return $this->returnData('note', $note);
-        // return view('notes.edit',compact('note'));
     }
 
     /**

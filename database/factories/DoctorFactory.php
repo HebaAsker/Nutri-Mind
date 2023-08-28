@@ -20,7 +20,6 @@ class DoctorFactory extends Factory
             'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'phone' => fake()->phoneNumber(),
             'image' => fake()->image,
-            'rate' => fake()->randomElement([1,2,3,4,5]),
             'gender' => fake()->randomElement(['male', 'female']),
             'qualification' => fake()->sentence(10),
             'national_id' => fake()->phoneNumber(),

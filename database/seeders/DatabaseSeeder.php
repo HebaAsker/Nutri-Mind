@@ -5,9 +5,11 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\ChatSeeder;
+use Database\Seeders\QouteSeeder;
 use Database\Seeders\DoctorSeeder;
 use Database\Seeders\MessageSeeder;
 use Database\Seeders\PatientSeeder;
+use Database\Seeders\QuiestionnaireSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,12 +23,8 @@ class DatabaseSeeder extends Seeder
             PatientSeeder::class,
             ChatSeeder::class,
             MessageSeeder::class,
+            QouteSeeder::class,
+            QuiestionnaireSeeder::class,
         ]);
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
