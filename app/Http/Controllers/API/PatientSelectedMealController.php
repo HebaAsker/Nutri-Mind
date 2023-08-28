@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\PatientSelectedMeal;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class PatientSelectedMealController extends Controller
 {

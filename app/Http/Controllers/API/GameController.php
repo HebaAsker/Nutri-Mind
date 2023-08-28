@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class GameController extends Controller
 {

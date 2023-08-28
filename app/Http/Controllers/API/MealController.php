@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Meal;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class MealController extends Controller
 {
