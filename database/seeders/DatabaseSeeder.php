@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             ChatSeeder::class,
             MessageSeeder::class,
             QouteSeeder::class,
-            QuiestionnaireSeeder::class,
+            // QuiestionnaireSeeder::class,
         ]);
     }
 }
