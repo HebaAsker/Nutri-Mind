@@ -4,7 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Chat;
+use App\Models\Note;
 use App\Models\Doctor;
+use App\Models\Review;
 use App\Models\SocialAccount;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -17,6 +19,7 @@ class Patient extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table='patients';
+
     protected $fillable = [
         'name',
         'email',
@@ -25,6 +28,7 @@ class Patient extends Authenticatable
         'weight',
         'height',
     ];
+    protected $guarded = [];
 
     protected $hidden = [
         'password',
@@ -37,14 +41,20 @@ class Patient extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function doctors()
-    {
-        return $this->belongsToMany(Doctor::class,'doctors');
-    }
 
     public function socialAccounts() : HasMany
     {
         return $this->hasMany(SocialAccount::class);
+    }
+
+    public function notes() : HasMany
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function reviews() : HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 
 }

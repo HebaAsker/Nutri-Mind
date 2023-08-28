@@ -15,6 +15,7 @@ use App\Http\Requests\PatientLoginRequest;
 use App\Http\Requests\UpdatePatientRequest;
 use App\Http\Requests\PatientRegisterRequest;
 
+
 class PatientAuthenticationController extends Controller
 {
     use ImageTrait;  // Store image
@@ -32,15 +33,19 @@ class PatientAuthenticationController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'password_confirmation' => Hash::make($request->password_confirmation),
             'image' => $file_name,
-            'phone' => $request->phone,
+
         ]);
 
         //create token
         $token = $patient->createToken('patient_token');
 
         return response([
-            'token' => $token
+            'status' => true,
+            'message' => 'Registered Successfully!',
+            $token,
+            $patient,
         ]);
     }
 
@@ -52,6 +57,7 @@ class PatientAuthenticationController extends Controller
         if (!$patient|| !Hash::check($request->password, $patient->password))
         {
             return response([
+                'status' => true,
                 'message' => 'Email or Password may be wrong, please try again'
             ]);
         }
@@ -60,7 +66,10 @@ class PatientAuthenticationController extends Controller
         $token = $patient->createToken('patient_token');
 
         return response([
-            'token' => $token
+            'status' => 'True',
+            'message' => 'LogedIn Successfully!',
+            $token,
+            $patient,
         ]);
     }
 
@@ -74,6 +83,7 @@ class PatientAuthenticationController extends Controller
                     ->update(['revoked' => true]);
             $accessToken->revoke();
         return response([
+            'status' => true,
             'mesaage' => 'Logged out sucsessfully'
         ]);
         }
@@ -109,6 +119,7 @@ class PatientAuthenticationController extends Controller
             $patient = Socialite::driver($provider)->stateless()->user();
         } catch (ClientException $exception) {
             return response([
+                'status' => true,
                 'message' => 'Invalid credentials provided'
             ]);
         }
@@ -135,6 +146,7 @@ class PatientAuthenticationController extends Controller
         $token = $patientCreated->createToken('token-name')->plainTextToken;
 
         return response([
+            'status' => true,
             'message' => $patientCreated,
             'token' => $token
         ]);
@@ -144,6 +156,7 @@ class PatientAuthenticationController extends Controller
     {
         if (!in_array($provider, ['facebook', 'apple', 'google'])) {
             return response([
+                'status' => true,
                 'message' => 'Please login using facebook, apple or google'
             ]);
         }
@@ -160,7 +173,10 @@ class PatientAuthenticationController extends Controller
 
     public function show() {
         $patient = Patient::where('id' , Auth::id())->first();
-        return $patient;
+        return response([
+            'status' => true,
+            $patient
+        ]);
     }
 
     public function update(UpdatePatientRequest $request, Patient $patient)
@@ -173,15 +189,16 @@ class PatientAuthenticationController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'image' => $file_name,
-            'phone' => $request->phone,
         ]);
 
         //create token
         $token = $patient->createToken('patient_token');
 
         return response([
+            'status' => true,
             'message' => 'Profile information has been updated successfully',
-            'token' => $token
+            $token,
+            $patient
         ]);
     }
 
@@ -189,6 +206,7 @@ class PatientAuthenticationController extends Controller
         $patient = Patient::where('id' , Auth::id());
         $patient->delete();
         return response([
+            'status' => true,
             'mesaage' => 'Your account has been deleted'
         ]);
     }

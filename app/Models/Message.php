@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Chat;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Message extends Model
 {
@@ -11,4 +12,8 @@ class Message extends Model
 
     protected $table = "messages";
     protected $guarded = [];
+
+    public function chat(){
+        return  $this->belongsTo(Chat::class);
+    }
 }

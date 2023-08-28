@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Patient;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Note extends Model
 {
     use HasFactory;
     protected $fillable=['title','body','patient_id'];
+
+    public function patient(){
+        return  $this->belongsTo(Patient::class);
+    }
 }

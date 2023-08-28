@@ -34,9 +34,9 @@ class DoctorAuthenticationController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'password_confirmation' => Hash::make($request->password_confirmation),
             'image' => $file_name,
             'phone' => $request->phone,
-            'rate' =>  $request->rate,
             'national_id'=> $request->national_id,
             'qualification' => $request->qualification,
             'experience_years' => $request->experience_years,
@@ -47,7 +47,10 @@ class DoctorAuthenticationController extends Controller
         $token = $doctor->createToken('doctor_token');
 
         return response([
-            'token' => $token
+            'status' => true,
+            'message' => 'Registered Successfully',
+            $token,
+            $doctor
         ]);
     }
 
@@ -59,6 +62,7 @@ class DoctorAuthenticationController extends Controller
         if (!$doctor|| !Hash::check($request->password, $doctor->password))
         {
             return response([
+                'status' => true,
                 'message' => 'Email or Password may be wrong, please try again'
             ]);
         }
@@ -67,7 +71,10 @@ class DoctorAuthenticationController extends Controller
         $token = $doctor->createToken('doctor_token');
 
         return response([
-            'token' => $token
+            'status' => true,
+            'message' => 'LoggedIn Successfully',
+            $token,
+            $doctor
         ]);
     }
 
@@ -81,6 +88,7 @@ class DoctorAuthenticationController extends Controller
                     ->update(['revoked' => true]);
             $accessToken->revoke();
         return response([
+            'status' => true,
             'mesaage' => 'Logged out sucsessfully'
         ]);
         }
@@ -116,6 +124,7 @@ class DoctorAuthenticationController extends Controller
             $doctor = Socialite::driver($provider)->stateless()->user();
         } catch (ClientException $exception) {
             return response([
+                'status' => true,
                 'message' => 'Invalid credentials provided'
             ]);
         }
@@ -142,8 +151,9 @@ class DoctorAuthenticationController extends Controller
         $token = $doctorCreated->createToken('token-name')->plainTextToken;
 
         return response([
-            'message' => $doctorCreated,
-            'token' => $token
+            'status' => true,
+            $doctorCreated,
+            $token
         ]);
     }
 
@@ -151,6 +161,7 @@ class DoctorAuthenticationController extends Controller
     {
         if (!in_array($provider, ['facebook', 'apple', 'google'])) {
             return response([
+                'status' => true,
                 'message' => 'Please login using facebook, apple or google'
             ]);
         }
@@ -168,7 +179,11 @@ class DoctorAuthenticationController extends Controller
 
     public function show() {
         $doctor = Doctor::where('id' , Auth::id())->first();
-        return $doctor;
+        return response([
+            'status' => true,
+            $doctor
+        ]);
+
     }
 
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
@@ -188,8 +203,10 @@ class DoctorAuthenticationController extends Controller
         $token = $doctor->createToken('doctor_token');
 
         return response([
+            'status' => true,
             'message' => 'Profile information has been updated successfully',
-            'token' => $token
+            $token,
+            $doctor
         ]);
     }
 
@@ -197,6 +214,7 @@ class DoctorAuthenticationController extends Controller
         $doctor = Doctor::where('id' , Auth::id());
         $doctor->delete();
         return response([
+            'status' => true,
             'mesaage' => 'Your account has been deleted'
         ]);
     }

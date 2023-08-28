@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Message;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Chat extends Model
 {
@@ -13,6 +15,9 @@ class Chat extends Model
     protected $guarded = [];
 
 
-
+    public function messages() : HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
 
 }

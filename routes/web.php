@@ -1,10 +1,4 @@
 <?php
-
-use App\Http\Controllers\API\AppointmentController;
-use App\Http\Controllers\API\PaymentController;
-use App\Http\Controllers\API\DoctorWorkTimeController;
-use App\Http\Controllers\API\NoteController;
-use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
