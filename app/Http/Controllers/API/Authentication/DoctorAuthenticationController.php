@@ -5,18 +5,16 @@ namespace App\Http\Controllers\API\Authentication;
 
 use App\Models\Doctor;
 use App\Traits\ImageTrait;
-use App\Models\SocialAccount;
-use Doctrine\Common\Lexer\Token;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Client\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Requests\DoctorLoginRequest;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\UpdateDoctorRequest;
-use App\Http\Requests\DoctorRegisterRequest;
 
 class DoctorAuthenticationController extends Controller
 {
@@ -25,22 +23,31 @@ class DoctorAuthenticationController extends Controller
 //------------------------------Default Authentication Methods----------------------------------//
 
     // DoctorRegisterRequest contain registration rules for Doctor
-    public function register(DoctorRegisterRequest $request) {
+    public function register(Request $request) {
 
         $file_name = $this->saveImage($request->image, 'images/profileImages');
+
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.Doctor::class],
+            'password' => ['required', 'confirmed','min:8',Password::defaults()],
+            'phone' => ['required', 'string'],
+            'national_id' => ['required', 'string'],
+            'qualification' => ['required', 'string'],
+            'experience_years' => ['required', 'integer'],
+        ]);
 
         //create doctor
         $doctor = Doctor::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'password_confirmation' => Hash::make($request->password_confirmation),
             'image' => $file_name,
             'phone' => $request->phone,
             'national_id'=> $request->national_id,
             'qualification' => $request->qualification,
             'experience_years' => $request->experience_years,
-            'appointments' => $request->appointments,
         ]);
 
         //create token

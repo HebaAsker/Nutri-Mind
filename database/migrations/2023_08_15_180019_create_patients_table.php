@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('image')->default('profile.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('password_confirmation');
             $table->rememberToken();
             $table->timestamps();
         });

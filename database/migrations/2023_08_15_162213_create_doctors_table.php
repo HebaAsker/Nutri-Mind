@@ -20,11 +20,9 @@ return new class extends Migration
             $table->enum('gender',['male','female'])->default('male');
             $table->string('qualification');
             $table->integer('experience_years');
-            $table->string('appointments');
             $table->string('image')->default('profile.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('password_confirmation');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\PatientLoginRequest;
 use App\Http\Requests\UpdatePatientRequest;
-use App\Http\Requests\PatientRegisterRequest;
 
 class PatientAuthenticationController extends Controller
 {
@@ -23,9 +23,15 @@ class PatientAuthenticationController extends Controller
 //------------------------------Default Authentication Methods----------------------------------//
 
     // PatientRegisterRequest contain registration rules for patient
-    public function register(PatientRegisterRequest $request) {
+    public function register(Request $request) {
 
         $file_name = $this->saveImage($request->image, 'images/profileImages');
+
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:'.Patient::class],
+                'password' => ['required', 'confirmed','min:8',Password::defaults()],
+            ]);
 
         //create Patient
         $patient = Patient::create([
