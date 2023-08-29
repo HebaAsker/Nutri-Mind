@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('qoute');
             $table->string('author');
-            $table->rememberToken();
             $table->timestamps();
         });
     }
