@@ -118,4 +118,14 @@ class NoteController extends Controller
         $note->delete();
         return $this->returnSuccess('Note deleted Successfully.');
     }
+    //Search for specific note in search box
+    public function search(Request $request){
+        $body_filter = $request->body;
+        $title_filter = $request->title;
+        $note = Note::query()
+            ->where('body', 'LIKE', "%{$body_filter}%")
+            ->orwhere('title', 'LIKE', "%{$title_filter}%")
+            ->get();
+    return $note;
+    }
 }

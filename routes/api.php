@@ -10,6 +10,7 @@ use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\AppointmentController;
 use App\Http\Controllers\API\Patient\QouteController;
 use App\Http\Controllers\API\DoctorWorkTimeController;
+use App\Http\Controllers\API\MealController;
 use App\Http\Controllers\API\Patient\PatientController;
 
 //--------------------------------Routes for patient app features--------------------------------//
@@ -56,3 +57,4 @@ Route::resource('reviews', ReviewController::class);
 Route::resource('doctor_work_times', DoctorWorkTimeController::class);
 Route::resource('payment', PaymentController::class);
 Route::resource('appointment', AppointmentController::class);
+Route::resource('meals',MealController::class);
