@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('questionnaires', function (Blueprint $table) {
             $table->id();
             $table->string('question');
+            $table->string('type');
+            $table->text('options')->nullable();
             $table->timestamps();
         });
     }

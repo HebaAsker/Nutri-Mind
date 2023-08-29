@@ -13,13 +13,8 @@ return new class extends Migration
     {
         Schema::create('qoutes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('image')->default('profile.png');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
-            $table->decimal('weight');
-            $table->decimal('height');
+            $table->string('qoute');
+            $table->string('author');
             $table->rememberToken();
             $table->timestamps();
         });

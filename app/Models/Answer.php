@@ -19,8 +19,4 @@ class Answer extends Model
         return $this->belongsTo(Questionnaire::class);
     }
 
-    public function option()
-    {
-        return $this->belongsTo(Option::class);
-    }
 }

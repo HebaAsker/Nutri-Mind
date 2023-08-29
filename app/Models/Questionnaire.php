@@ -14,11 +14,6 @@ class Questionnaire extends Model
     protected $table = "questionnaires";
     protected $guarded = [];
 
-    public function options()
-    {
-        return $this->hasMany(Option::class);
-    }
-
     public function answers() {
         return $this->hasMany(Answer::class);
     }

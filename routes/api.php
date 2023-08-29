@@ -12,6 +12,7 @@ use App\Http\Controllers\API\Patient\QouteController;
 use App\Http\Controllers\API\DoctorWorkTimeController;
 use App\Http\Controllers\API\MealController;
 use App\Http\Controllers\API\Patient\PatientController;
+use App\Http\Controllers\API\Patient\QuestionnaireController;
 
 //--------------------------------Routes for patient app features--------------------------------//
 Route::middleware('auth:patient')->group(function () {
@@ -19,6 +20,8 @@ Route::middleware('auth:patient')->group(function () {
     Route::get('/doctor/{id}', [PatientController::class, 'show'])->name('doctor_profile');
     Route::get('/doctors/search', [PatientController::class, 'search'])->name('find_doctor');
     Route::get('/qoutes', [QouteController::class, 'index'])->name('get_qoutes');
+    Route::get('/questions',[QuestionnaireController::class,'show']);
+    Route::post('/answer/questions',[QuestionnaireController::class,'answer']);
 });
 //------------------------------End Routes for patient app features------------------------------//
 

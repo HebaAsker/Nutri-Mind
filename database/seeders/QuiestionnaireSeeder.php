@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Answer;
-use Illuminate\Http\Request;
-use App\Models\Questionnaire;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 
 class QuiestionnaireSeeder extends Seeder
@@ -13,36 +11,29 @@ class QuiestionnaireSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(Request $request)
+    public function run()
     {
-    //     $questions = [
-    //         ['question' => 'How are you feeling today?',
-    //             'options' =>
-    //                 ['option' => 'Not Bad'],
-    //                 ['option' => 'Good'],
-    //                 ['option' => 'Nice'],
-    //                 ['option' => 'Very good'],
-    //         ],
-    //         ['question' => 'Are you on your diet program?',
-    //             'options' =>
-    //                 ['option' => 'Yes'],
-    //                 ['option' => 'No'],
-    //                 ['option' => 'Yes, but want to change'],
-    //         ],
-    //         'question' => 'What is your weight today? Are you satisfied with it?',
-    //         'question' => 'Tell me things made you bad or eating more today'
-    //     ];
-
-    //     foreach ($questions as $question) {
-    //         Questionnaire::create(
-    //             [   'question' => $question['question'],
-    //                 'options' => $question['option[]']
-    //             ]
-    //         );
-    //     }
-    //     return
-    //     [
-    //         'question_id' => Questionnaire::all()->random()->id,
-    //     ];
+        DB::table('questionnaires')->insert([
+            [
+                'question' => 'How are you feeling today?',
+                'type' => 'options',
+                'options' => json_encode(['Not Bad', 'Good', 'Nice', 'Very good']),
+            ],
+            [
+                'question' => 'Are you on your diet program?',
+                'type' => 'options',
+                'options' => json_encode(['Yes', 'No', 'Yes, but want to change']),
+            ],
+            [
+                'type' => 'written',
+                'question' => 'What is your weight today? Are you satisfied with it?',
+                'options' => null,
+            ],
+            [
+                'type' => 'written',
+                'question' => 'Tell me things made you bad or eating more today',
+                'options' => null,
+            ],
+        ]);
     }
 }

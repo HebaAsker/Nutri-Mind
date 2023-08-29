@@ -24,7 +24,6 @@ class DoctorFactory extends Factory
             'qualification' => fake()->sentence(10),
             'national_id' => fake()->phoneNumber(),
             'experience_years' => fake()->randomElement([1,2,3,4,5]),
-            'appointments' => fake(4)->randomElement(['Saturday', 'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday']),
         ];
     }
 }
