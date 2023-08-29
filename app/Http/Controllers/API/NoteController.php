@@ -49,12 +49,12 @@ class NoteController extends Controller
                 'body' => $request->body,
                 'patient_id'=>$request->patient_id
             ]);
-        }else{
+        }else if(isset($request->title)&&!empty($request->title)){
             Note::create(
                 $request->only(['patient_id', 'title', 'body'])
             );
-        }
         return $this->returnSuccess('Note created Successfully.');
+        }
     }
 
     /**
