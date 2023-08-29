@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('status', ['set', 'not set'])->default('not set');
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-            $table->unique(['date', 'time']);
+            $table->unique(['date', 'time','id']);
         });
     }
 
