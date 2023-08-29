@@ -19,6 +19,15 @@ class Patient extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table='patients';
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'image',
+        'weight',
+        'height',
+    ];
     protected $guarded = [];
 
     protected $hidden = [

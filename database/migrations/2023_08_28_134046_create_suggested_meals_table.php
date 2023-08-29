@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qoutes', function (Blueprint $table) {
+        Schema::create('suggested_meals', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('image')->default('profile.png');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
-            $table->decimal('weight');
-            $table->decimal('height');
-            $table->rememberToken();
+            $table->integer('calories');
+            $table->integer('protein');
+            $table->integer('fats');
+            $table->integer('carbs');
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qoutes');
+        Schema::dropIfExists('suggested_meals');
     }
 };

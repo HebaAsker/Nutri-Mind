@@ -15,6 +15,7 @@ use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\PatientLoginRequest;
 use App\Http\Requests\UpdatePatientRequest;
 
+
 class PatientAuthenticationController extends Controller
 {
     use ImageTrait;  // Store image

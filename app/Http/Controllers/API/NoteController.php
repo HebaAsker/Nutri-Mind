@@ -49,12 +49,12 @@ class NoteController extends Controller
                 'body' => $request->body,
                 'patient_id'=>$request->patient_id
             ]);
-        }else{
+        }else if(isset($request->title)&&!empty($request->title)){
             Note::create(
                 $request->only(['patient_id', 'title', 'body'])
             );
-        }
         return $this->returnSuccess('Note created Successfully.');
+        }
     }
 
     /**
@@ -117,5 +117,15 @@ class NoteController extends Controller
     {
         $note->delete();
         return $this->returnSuccess('Note deleted Successfully.');
+    }
+    //Search for specific note in search box
+    public function search(Request $request){
+        $body_filter = $request->body;
+        $title_filter = $request->title;
+        $note = Note::query()
+            ->where('body', 'LIKE', "%{$body_filter}%")
+            ->orwhere('title', 'LIKE', "%{$title_filter}%")
+            ->get();
+    return $note;
     }
 }

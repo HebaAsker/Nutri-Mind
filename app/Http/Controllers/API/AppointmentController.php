@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
 use App\Models\DoctorWorkTime;
 use App\Traits\GeneralTrait;
@@ -18,75 +19,47 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        $appointments = Appointment::all();
+        $validator = Validator::make($request->all(), [
+            'doctor_id' => 'required|integer|exists:doctors,id',
+        ], [
+            'doctor_id.*' => 'Unauthorized Access',
+        ]);
 
-        $queryParams = $request->query();
-
-        // appointments will be return if doctor or patient ask for
-        foreach ($queryParams as $key => $value) {
-            $appointments = $appointments->where($key, $value);
+        if ($validator->fails()) {
+            return $this->returnError($validator->errors());
         }
+
+        $appointments = Appointment::where('doctor_id', $request->doctor_id)->get();
 
         return $this->returnData('appointments', $appointments);
     }
-
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $doctorWorkTime = (object) [
-            'id' => 1
-        ];
-        $doctor = (object) [
-            'id' => 1
-        ];
-        $patient = (object) [
-            'id' => 1
-        ];
-        $payment = (object) [
-            'id' => 1
-        ];
-        return view('Appointments.create', compact(['doctorWorkTime', 'doctor', 'patient', 'payment']));
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-{
-    // Validation rules
-    $rules = [
-        'full_name' => 'required|string|max:255',
-        'age' => 'required|integer',
-        'doctor_work_time_id' => [
-            'required',
-            'integer',
-            'exists:doctor_work_times,id',
-            'unique:appointments,doctor_work_time_id'
-        ],
-        'doctor_id' => 'required|integer|exists:doctors,id',
-        'payment_id' => 'required|integer|exists:payments,id',
-        'patient_id' => 'required|integer|exists:patients,id'
-    ];
-    $customMessages = [
-        'doctor_work_time_id.unique' => 'That time is not available.'
-    ];
+    public function store(AppointmentRequest $request)
+    {
+        $validated = $request->validated();
 
-    $validator = Validator::make($request->all(), $rules, $customMessages);
+        if ($validated->fails())
+            dd($validated);
 
-    if ($validator->fails()) {
-        return $this->returnError($validator->errors());
+        Appointment::create($request->all());
+        DoctorWorkTime::where('id', $request->doctor_id)->update([
+            'status' => 'set'
+        ]);
+
+        return $this->returnSuccess('Appointemnt added successfully');
     }
 
-    Appointment::create($request->all());
-    DoctorWorkTime::where('id',$request->doctor_work_time)->update([
-        'status'=>'set'
-    ]);
-
-    return $this->returnSuccess('Appointment created successfully.');
-}
 
 
     /**
@@ -108,38 +81,18 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Appointment $appointment)
+    public function update(AppointmentRequest $request, Appointment $appointment)
     {
-        DoctorWorkTime::where('id',$appointment->doctor_work_time)->update([
-            'status'=>'not set'
-        ]);
-        $rules = [
-            'full_name' => 'required|string|max:255',
-            'age' => 'required|integer',
-            'doctor_work_time_id' => [
-                'required',
-                'integer',
-                'exists:doctor_work_times,id',
-                'unique:appointments,doctor_work_time_id'
-            ],
-            'doctor_id' => 'required|integer|exists:doctors,id',
-            'payment_id' => 'required|integer|exists:payments,id',
-            'patient_id' => 'required|integer|exists:patients,id'
-        ];
-        $customMessages = [
-            'doctor_work_time_id.unique' => 'That time is not available.'
-        ];
+        $validated = $request->validated();
 
-        $validator = Validator::make($request->all(), $rules, $customMessages);
-
-        if ($validator->fails()) {
-            return $this->returnError($validator->errors());
+        if ($validated->fails()) {
+            return $this->returnError($validated->errors());
         }
 
         // Update the appointment
         $appointment->update($request->all());
-        DoctorWorkTime::where('id',$request->doctor_work_time)->update([
-            'status'=>'set'
+        DoctorWorkTime::where('id', $request->doctor_work_time_id)->update([
+            'status' => 'set'
         ]);
 
         return $this->returnSuccess('Appointment updated successfully.');
@@ -150,9 +103,23 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
+        $rules = [
+            'doctor_work_time_id' => 'required|integer|exists:doctor_work_times,id',
+        ];
+
+        $messages = [
+            'doctor_work_time_id.required' => 'You must choose time to set that appointmet',
+            'doctor_work_time_id.integer' => 'Unauthorized Access',
+            'doctor_work_time_id.exists' => 'That time is not valid'
+        ];
+        $validator = Validator::make($appointment->doctor_work_time_id, $rules, $messages);
+
+        if ($validator->fails()) {
+            return $this->returnError($validator->errors());
+        }
         // payment we need to give the patient his money again, will work in that after paypal
-        DoctorWorkTime::where('id',$appointment->doctor_work_time)->update([
-            'status'=>'not set'
+        DoctorWorkTime::where('id', $appointment->doctor_work_time_id)->update([
+            'status' => 'not set'
         ]);
         $appointment->delete();
     }
