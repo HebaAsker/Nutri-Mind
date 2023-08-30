@@ -14,7 +14,7 @@ use GuzzleHttp\Exception\ClientException;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\PatientLoginRequest;
 use App\Http\Requests\UpdatePatientRequest;
-
+use App\Notifications\OTP;
 
 class PatientAuthenticationController extends Controller
 {
@@ -32,16 +32,21 @@ class PatientAuthenticationController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:'.Patient::class],
                 'password' => ['required', 'confirmed','min:8',Password::defaults()],
+                'height' => ['required','integer'],
+                'weight' => ['required','integer'],
+                'age' => ['required','integer'],
+                'gender' => ['required', 'string'],
             ]);
-
         //create Patient
         $patient = Patient::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'password_confirmation' => Hash::make($request->password_confirmation),
             'image' => $file_name,
-
+            'height' => $request->height,
+            'weight' => $request->weight,
+            'age' => $request->age,
+            'gender' => $request->gender
         ]);
 
         //create token
@@ -58,7 +63,6 @@ class PatientAuthenticationController extends Controller
     public function login(PatientLoginRequest $request) {
 
         $patient = Patient::where('email' , $request->email)->first();
-
         //check if patient is not found or password not matched with password in DB
         if (!$patient|| !Hash::check($request->password, $patient->password))
         {
@@ -73,7 +77,7 @@ class PatientAuthenticationController extends Controller
 
         return response([
             'status' => 'True',
-            'message' => 'LogedIn Successfully!',
+            'message' => 'LoggedIn Successfully!',
             $token,
             $patient,
         ]);
@@ -92,6 +96,33 @@ class PatientAuthenticationController extends Controller
             'status' => true,
             'mesaage' => 'Logged out sucsessfully'
         ]);
+        }
+    }
+
+    public function restorPassword(Request $request){
+        $patient = Patient::where('email',$request->email)->first();
+        $patient->generateOtpCode(); //send otp code
+
+        $patient->notify(new OTP());
+
+        $request->validate([
+            'password' => ['required', 'confirmed','min:8',Password::defaults()]
+        ]);
+
+        if($request->verfication_code == $patient->verfication_code){
+            $patient -> update([
+                'password' => Hash::make($request->password),
+            ]);
+            return response([
+                'status' => true,
+                'message' => 'Your password has been changed'
+            ]);
+        }
+        else{
+            return response([
+                'status' => true,
+                'message' => 'Your verification code not correct'
+            ]);
         }
     }
 
