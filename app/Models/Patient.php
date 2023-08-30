@@ -19,15 +19,6 @@ class Patient extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table='patients';
-
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'image',
-        'weight',
-        'height',
-    ];
     protected $guarded = [];
 
     protected $hidden = [
@@ -55,6 +46,15 @@ class Patient extends Authenticatable
     public function reviews() : HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+
+    public function generateOtpCode(){
+        //when patient login
+        $this->timestamps = false;
+        $this->verfication_code = rand(1000,6000);
+        $this->expire_at = now()->addMinutes(5);
+        $this->save();
     }
 
 }

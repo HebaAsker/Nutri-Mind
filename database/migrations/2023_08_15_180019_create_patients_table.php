@@ -18,7 +18,12 @@ return new class extends Migration
             $table->string('image')->default('profile.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('height');
+            $table->integer('weight');
             $table->integer('age');
+            $table->enum('gender',['male','female'])->default('male');
+            $table->string('verfication_code')->nullable();
+            $table->dateTime('expire_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

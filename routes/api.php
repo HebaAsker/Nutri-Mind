@@ -22,6 +22,7 @@ Route::middleware('auth:patient')->group(function () {
     Route::get('/qoutes', [QouteController::class, 'index'])->name('get_qoutes');
     Route::get('/questions',[QuestionnaireController::class,'show']);
     Route::post('/answer/questions',[QuestionnaireController::class,'answer']);
+    Route::get('/calories',[PatientController::class,'calculate']);
 });
 //------------------------------End Routes for patient app features------------------------------//
 
@@ -35,8 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/show-chats', [ChatController::class, 'showChats']);
     Route::get('/chats/search', [ChatController::class, 'search']);
 });
-
-
 //--------------------------End Routes for Chat between doctor and patient--------------------------//
 
 
