@@ -27,4 +27,14 @@ class ReviewRequest extends FormRequest
             'rate' => 'required|integer|between:1,5'
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'patient_id.*' => 'You are not authorized to access this information.',
+            'doctor_id.*' => 'You are not authorized to access this information.',
+            'rate.required' => 'The rate is required.',
+            'rate.integer' => 'The rate must be an integer.',
+            'rate.between' => 'The rate must be between 1 and 5.',
+        ];
+    }
 }
