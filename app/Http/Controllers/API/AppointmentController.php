@@ -59,7 +59,7 @@ class AppointmentController extends Controller
             'age' => $request->age
         ]);
 
-        return $this->returnSuccess('Appointemnt added successfully');
+        return $this->returnSuccess('Appointemnt added successfully.');
     }
 
 

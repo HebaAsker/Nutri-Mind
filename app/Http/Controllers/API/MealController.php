@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\MealRequest;
 use App\Models\Meal;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class MealController extends Controller
         $validator = Validator::make($request->all(), [
             'patient_id' => 'required|integer|exists:patients,id',
         ], [
-            'patient_id.*' => 'Unauthorized Access',
+            'patient_id.*' => 'You are not authorized to access this information.',
         ]);
 
         if ($validator->fails()) {
@@ -42,9 +43,13 @@ class MealController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MealRequest $request)
     {
-        //
+        $validated=$request->validated();
+
+        Meal::create($request->all());
+
+        return $this->returnSuccess('Meal added successfully.');
     }
 
     /**
@@ -52,7 +57,7 @@ class MealController extends Controller
      */
     public function show(Meal $meal)
     {
-        //
+        return $this->returnData('Meal',$meal);
     }
 
     /**
@@ -60,7 +65,7 @@ class MealController extends Controller
      */
     public function edit(Meal $meal)
     {
-        //
+        return $this->returnData('Meal',$meal);
     }
 
     /**
@@ -68,7 +73,11 @@ class MealController extends Controller
      */
     public function update(Request $request, Meal $meal)
     {
-        //
+        $validated=$request->validated();
+
+        $meal->update($request->all());
+
+        return $this->returnSuccess('Meal updated successfully.');
     }
 
     /**
@@ -76,6 +85,7 @@ class MealController extends Controller
      */
     public function destroy(Meal $meal)
     {
-        //
+        $meal->delete();
+        return $this->returnSuccess('Meal deleted successfully.');
     }
 }

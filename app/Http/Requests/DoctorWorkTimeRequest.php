@@ -11,7 +11,7 @@ class DoctorWorkTimeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -34,7 +34,7 @@ class DoctorWorkTimeRequest extends FormRequest
             'date.required' => 'The date field is required.',
             'date.date' => 'Please enter a valid date.',
             'doctor_id.required' => 'Please select doctor.',
-            'doctor_id.integer' => 'Unauthorized Access.',
+            'doctor_id.integer' => 'You are not authorized to access this information.',
             'doctor_id.exists' => 'The selected doctor does not exist.',
             'available_times.array' => 'The available times must be an array.',
             'available_times.*.string' => 'Each available time must be a string.',
