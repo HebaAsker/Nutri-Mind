@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
 use App\Models\DoctorWorkTime;
+use App\Models\Patient;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -49,12 +50,13 @@ class AppointmentController extends Controller
     {
         $validated = $request->validated();
 
-        if ($validated->fails())
-            dd($validated);
-
-        Appointment::create($request->all());
+        Appointment::create($request->except(['age']));
         DoctorWorkTime::where('id', $request->doctor_id)->update([
             'status' => 'set'
+        ]);
+        $patinet = Patient::where('id', $request->patient_id);
+        $patinet->update([
+            'age' => $request->age
         ]);
 
         return $this->returnSuccess('Appointemnt added successfully');
@@ -85,12 +87,17 @@ class AppointmentController extends Controller
     {
         $validated = $request->validated();
 
-        if ($validated->fails()) {
-            return $this->returnError($validated->errors());
-        }
+        DoctorWorkTime::where('id', $appointment->doctor_work_time_id)->update([
+            'status' => 'not set'
+        ]);
 
-        // Update the appointment
-        $appointment->update($request->all());
+        $appointment->update($request->except(['age']));
+
+        $patinet = Patient::where('id', $request->patient_id);
+        $patinet->update([
+            'age' => $request->age
+        ]);
+
         DoctorWorkTime::where('id', $request->doctor_work_time_id)->update([
             'status' => 'set'
         ]);
@@ -106,21 +113,21 @@ class AppointmentController extends Controller
         $rules = [
             'doctor_work_time_id' => 'required|integer|exists:doctor_work_times,id',
         ];
-
         $messages = [
-            'doctor_work_time_id.required' => 'You must choose time to set that appointmet',
-            'doctor_work_time_id.integer' => 'Unauthorized Access',
-            'doctor_work_time_id.exists' => 'That time is not valid'
+            'doctor_work_time_id.*' => 'Unauthorized Access.',
         ];
-        $validator = Validator::make($appointment->doctor_work_time_id, $rules, $messages);
+        $validator = Validator::make(['doctor_work_time_id' => $appointment->doctor_work_time_id], $rules, $messages);
 
         if ($validator->fails()) {
             return $this->returnError($validator->errors());
         }
-        // payment we need to give the patient his money again, will work in that after paypal
+
+        // Restore payment to the patient if necessary (implementation pending)
+
         DoctorWorkTime::where('id', $appointment->doctor_work_time_id)->update([
             'status' => 'not set'
         ]);
         $appointment->delete();
+        return $this->returnSuccess('Appointment Deleted Successfully.');
     }
 }

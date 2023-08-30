@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DoctorWorkTimeRequest;
 use App\Models\DoctorWorkTime;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -17,8 +18,15 @@ class DoctorWorkTimeController extends Controller
         'date' => 'required|date',
         'doctor_id' => 'required|integer|exists:doctors,id',
     ];
+    $messages=[
+        'date.required'=> 'You must choose date.',
+        'date.date'=>"The date must be a valid date.",
+        'doctor_id.required' => 'Please select doctor.',
+        'doctor_id.integer' => 'Unauthorized Access.',
+        'doctor_id.exists' => 'The selected doctor does not exist.',
+        ];
 
-    $validator = Validator::make($request->all(), $rules);
+    $validator = Validator::make($request->only(['date','doctor_id']), $rules,$messages);
 
     if ($validator->fails()) {
         return $this->returnError($validator->errors());
@@ -35,23 +43,13 @@ class DoctorWorkTimeController extends Controller
     {
         return view('DoctorWorkTimes.index');
     }
-    public function store(Request $request)
+    public function store(DoctorWorkTimeRequest $request)
     {
         // return $request;
         if(isset($request->available_times) && !empty($request->available_times))
         $request->available_times = array_unique($request->available_times);
-        $rules = [
-            'date' => 'required|date',
-            'doctor_id' => 'required|integer|exists:doctors,id',
-            'available_times' => 'array',
-            'available_times.*' => 'string|regex:/^[0-2][0-9]:[0-5][0-9]$/|unique:doctor_work_times,date,time'
-        ];
 
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->returnError($validator->errors());
-        }
+        $validated=$request->validated();
 
         $doctorWorkTimes = DoctorWorkTime::whereDate('date', $request->date)
             ->whereDoctorId($request->doctor_id)
@@ -68,7 +66,7 @@ class DoctorWorkTimeController extends Controller
                 'doctor_id' => $request->doctor_id
             ]);
         }
-        return $this->returnSuccess('Your work Time is set successfully.');
+        return $this->returnSuccess('Your working Times is set successfully.');
     }
 
 }
