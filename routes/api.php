@@ -11,6 +11,7 @@ use App\Http\Controllers\API\AppointmentController;
 use App\Http\Controllers\API\Patient\QouteController;
 use App\Http\Controllers\API\DoctorWorkTimeController;
 use App\Http\Controllers\API\MealController;
+use App\Http\Controllers\API\MoodController;
 use App\Http\Controllers\API\Patient\PatientController;
 use App\Http\Controllers\API\Patient\QuestionnaireController;
 
@@ -60,3 +61,4 @@ Route::resource('doctor_work_times', DoctorWorkTimeController::class);
 Route::resource('payment', PaymentController::class);
 Route::resource('appointment', AppointmentController::class);
 Route::resource('meals',MealController::class);
+Route::resource('moods',MoodController::class);
