@@ -23,7 +23,7 @@ class AppointmentController extends Controller
         $validator = Validator::make($request->all(), [
             'doctor_id' => 'required|integer|exists:doctors,id',
         ], [
-            'doctor_id.*' => 'Unauthorized Access',
+            'doctor_id.*' => 'You are not authorized to access this information.',
         ]);
 
         if ($validator->fails()) {
@@ -114,7 +114,7 @@ class AppointmentController extends Controller
             'doctor_work_time_id' => 'required|integer|exists:doctor_work_times,id',
         ];
         $messages = [
-            'doctor_work_time_id.*' => 'Unauthorized Access.',
+            'doctor_work_time_id.*' => 'You are not authorized to access this information..',
         ];
         $validator = Validator::make(['doctor_work_time_id' => $appointment->doctor_work_time_id], $rules, $messages);
 
