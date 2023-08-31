@@ -84,5 +84,20 @@ trait GeneralTrait{
 
         return $this->returnSuccess('data deleted successfully.');
     }
+    public function viewOne($dataId,$model,$tableName,$IdName)
+    {
+        $validator = Validator::make(['id' => $dataId], [
+            'id' => "required|integer|exists:$tableName,$IdName",
+        ], [
+            'id.*' =>  'You are not authorized to access this information.'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->returnError($validator->errors());
+        }
+
+        $data = $model::where($IdName,$dataId)->get();
+        return $this->returnData('data',$data);
+    }
 }
 ?>
