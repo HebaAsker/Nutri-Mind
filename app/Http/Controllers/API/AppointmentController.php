@@ -15,43 +15,48 @@ class AppointmentController extends Controller
 {
     use GeneralTrait;
 
-    /**
-     * Display a listing of the resource.
-     */
+    // my scheduale
+    // $request=>doctor_id, date
     public function index(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'doctor_id' => 'required|integer|exists:doctors,id',
+            'date' => 'required|date',
         ], [
             'doctor_id.*' => 'You are not authorized to access this information.',
+            'date.*' => 'You are not authorized to access this information.'
         ]);
 
         if ($validator->fails()) {
             return $this->returnError($validator->errors());
         }
 
-        $appointments = Appointment::where('doctor_id', $request->doctor_id)->get();
+        $appointments = Appointment::join('doctor_work_times', 'appointments.doctor_work_time_id', '=', 'doctor_work_times.id')
+            ->join('patients', 'appointments.patient_id', '=', 'patients.id')
+            ->join('reports', 'appointments.id', '=', 'reports.appointment_id')
+            ->where('appointments.doctor_id', $request->doctor_id)
+            ->where('date', $request->date)
+            ->orderBy('time')
+            ->get([
+                "full_name",
+                "time",
+                "diagnosis_of_his_state",
+                "description",
+                "appointment_id"
+            ]);
 
         return $this->returnData('appointments', $appointments);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
 
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // book an appointment
+    // $request => doctor_work_time_id, full_name, age, doctor_id, patient_id, payment_id
     public function store(AppointmentRequest $request)
     {
         $validated = $request->validated();
 
         Appointment::create($request->except(['age']));
-        DoctorWorkTime::where('id', $request->doctor_id)->update([
+        DoctorWorkTime::where('id', $request->doctor_work_time_id)->update([
             'status' => 'set'
         ]);
         $patinet = Patient::where('id', $request->patient_id);
@@ -129,5 +134,33 @@ class AppointmentController extends Controller
         ]);
         $appointment->delete();
         return $this->returnSuccess('Appointment Deleted Successfully.');
+    }
+    public function patient_info($appointmentId)
+    {
+        $validator = Validator::make(['id' => $appointmentId], [
+            'id' => "integer",
+        ], [
+            'id.integer' => 'You are not authorized to access this information.'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->returnError($validator->errors());
+        }
+
+        $info = Appointment::join('doctor_work_times', 'appointments.doctor_work_time_id', '=', 'doctor_work_times.id')
+            ->join('patients', 'appointments.patient_id', '=', 'patients.id')
+            ->join('reports', 'appointments.id', '=', 'reports.appointment_id')
+            ->orderBy('date')
+            ->where('appointments.id', $appointmentId)
+            ->first([
+                "full_name",
+                "time",
+                "age",
+                "gender",
+                "diagnosis_of_his_state",
+                "description",
+                "appointment_id"
+            ]);
+        return $this->returnData('info', $info);
     }
 }

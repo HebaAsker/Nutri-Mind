@@ -12,26 +12,8 @@ use Illuminate\Support\Facades\Validator;
 class PaymentController extends Controller
 {
     use GeneralTrait;
-    /**
-     * Display a listing of the resource.
-     */
 
-    public function index(Request $request)
-    {
-        return $this->getData($request, 'App\Models\Payment');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // payment
     public function store(PaymentRequest $request)
     {
         // check if card is valid or not... need to be added after paypal

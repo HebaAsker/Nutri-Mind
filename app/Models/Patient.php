@@ -56,5 +56,9 @@ class Patient extends Authenticatable
         $this->expire_at = now()->addMinutes(5);
         $this->save();
     }
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
 }

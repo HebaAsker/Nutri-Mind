@@ -4,7 +4,7 @@ use App\Http\Controllers\API\GameController;
 use App\Http\Controllers\API\PatientSavedMealController;
 use App\Http\Controllers\API\PatientSelectedMealController;
 use App\Http\Controllers\API\PatientSuggestedMealController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\SuggestedMealController;
 use Illuminate\Support\Facades\Route;
 
@@ -73,6 +73,7 @@ Route::resource('patient_selected_meals',PatientSelectedMealController::class);
 Route::resource('suggested_meals',SuggestedMealController::class);
 Route::resource('game',GameController::class);
 Route::resource('reports',ReportController::class);
+Route::get('patient_info/{appointment_id}',[AppointmentController::class,'patient_info']);
 
 
 
