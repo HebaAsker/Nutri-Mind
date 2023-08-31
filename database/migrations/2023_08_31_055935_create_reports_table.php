@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('description');
             $table->foreignId('appointment_id');
             $table->timestamps();
-            $table->unique(['appointment_id']);
         });
     }
 

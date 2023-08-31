@@ -3,26 +3,28 @@ namespace App\Traits;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-trait GeneralTrait{
+
+trait GeneralTrait
+{
     public function returnError($msg)
     {
         return response()->json([
-            'success'=>false,
-            'message'=>$msg
+            'success' => false,
+            'message' => $msg
         ]);
     }
-    public function returnSuccess($msg="")
+    public function returnSuccess($msg = "")
     {
         return response()->json([
-            'success'=>true,
-            'message'=>$msg
+            'success' => true,
+            'message' => $msg
         ]);
     }
-    public function returnData($key,$value)
+    public function returnData($key, $value)
     {
         return response()->json([
-            'success'=>true,
-            $key=>$value
+            'success' => true,
+            $key => $value
         ]);
     }
 
@@ -50,7 +52,7 @@ trait GeneralTrait{
         $data = $modelName::query();
 
         // Filter payments by doctor_id or patient_id
-        if(isset($queryParams['doctor_id'])||isset($queryParams['patient_id'])){
+        if (isset($queryParams['doctor_id']) || isset($queryParams['patient_id'])) {
             if (isset($queryParams['doctor_id'])) {
                 $data->where('doctor_id', $queryParams['doctor_id']);
             }
@@ -67,12 +69,12 @@ trait GeneralTrait{
 
     }
 
-    public function destroyData($dataId,$model,$tableName)
+    public function destroyData($dataId, $model, $tableName)
     {
         $validator = Validator::make(['id' => $dataId], [
             'id' => "required|integer|exists:$tableName,id",
         ], [
-            'id.*' =>  'You are not authorized to access this information.'
+            'id.*' => 'You are not authorized to access this information.'
         ]);
 
         if ($validator->fails()) {
@@ -81,23 +83,30 @@ trait GeneralTrait{
 
         $data = $model::find($dataId);
         $data->delete();
+        $lastPosition = strrpos($model, DIRECTORY_SEPARATOR);
+        $substring = substr($model, $lastPosition + 1);
 
-        return $this->returnSuccess('data deleted successfully.');
+        // Insert spaces between consecutive capital characters
+        $substring = preg_replace('/([a-z])([A-Z])/', '$1 $2', $substring);
+
+        // Convert all characters except the first one to lowercase
+        $substring = ucfirst(strtolower($substring));
+        return $this->returnSuccess("$substring deleted successfully.");
     }
-    public function viewOne($dataId,$model,$tableName,$IdName)
+    public function viewOne($dataId, $model, $tableName, $IdName)
     {
         $validator = Validator::make(['id' => $dataId], [
             'id' => "required|integer|exists:$tableName,$IdName",
         ], [
-            'id.*' =>  'You are not authorized to access this information.'
+            'id.*' => 'You are not authorized to access this information.'
         ]);
 
         if ($validator->fails()) {
             return $this->returnError($validator->errors());
         }
 
-        $data = $model::where($IdName,$dataId)->get();
-        return $this->returnData('data',$data);
+        $data = $model::where($IdName, $dataId)->get();
+        return $this->returnData('data', $data);
     }
 }
 ?>
