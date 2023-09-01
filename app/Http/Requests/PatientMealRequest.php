@@ -22,8 +22,8 @@ class PatientMealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'patient_id' => 'required|exists:patients',
-            'meal_id' => 'required|exists:suggested_meals',
+            'patient_id' => 'required|exists:patients,id',
+            'meal_id' => 'required|exists:suggested_meals,id',
         ];
     }
     public function messages(): array

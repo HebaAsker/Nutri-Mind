@@ -5,7 +5,7 @@ use App\Http\Controllers\API\PatientSavedMealController;
 use App\Http\Controllers\API\PatientSelectedMealController;
 use App\Http\Controllers\API\PatientSuggestedMealController;
 use App\Http\Controllers\API\ReportController;
-use App\Http\Controllers\SuggestedMealController;
+use App\Http\Controllers\API\SuggestedMealController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\NoteController;

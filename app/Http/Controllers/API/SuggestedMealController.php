@@ -1,73 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\SuggestedMealRequest;
 use App\Models\SuggestedMeal;
 use App\Traits\GeneralTrait;
-use Illuminate\Http\Request;
+use App\Traits\ImageTrait;
 
 class SuggestedMealController extends Controller
 {
     use GeneralTrait;
-    /**
-     * Display a listing of the resource.
-     */
+    use ImageTrait;
+
     public function index()
     {
         $meals = SuggestedMeal::all('*');
-        $this->returnData('meals', $meals);
+        return $this->returnData('meals', $meals);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(SuggestedMealRequest $request)
     {
-        $validated=$request->validated();
-        SuggestedMeal::create($request->all());
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $imagePath = $this->uploadImage($request->file('image'), 'images/suggested_meals');
+        }
+
+        $meal = SuggestedMeal::create($request->all());
+
+        if (isset($imagePath)) {
+            $meal->update([
+                'image' => $imagePath,
+            ]);
+        }
+
         return $this->returnSuccess('Meal added successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(SuggestedMeal $suggestedMeal)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SuggestedMeal $suggestedMeal)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(SuggestedMealRequest $request, SuggestedMeal $suggestedMeal)
-    {
-        $validated=$request->validated();
-        $suggestedMeal->update($request->all());
-        return $this->returnSuccess('Meal updated successfully.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($suggestedMealId)
-    {
-        return $this->destroyData($suggestedMealId,'App\Models\SuggestedMeal','suggested_meals');
     }
 }
