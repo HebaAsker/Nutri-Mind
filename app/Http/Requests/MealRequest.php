@@ -30,7 +30,7 @@ class MealRequest extends FormRequest
             "time" => "required|regex:/^[0-9]{2}:[0-9]{2}$/",
             "date" => "required|regex:/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/",
             "type" => "required|in:breakfast,lunch,dinner",
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'mimes:jpeg,png,jpg,gif|max:2048',
             'patient_id' => 'required|integer|exists:patients,id',
         ];
     }
@@ -54,7 +54,6 @@ class MealRequest extends FormRequest
             "type.required" => "Please specify the type of the meal.",
             "type.in" => "The meal type must be one of breakfast, lunch, or dinner.",
             'patient_id.*' => 'You are not authorized to access this information.',
-            'image.image' => 'The uploaded file must be an image.',
             'image.mimes' => 'Only JPEG, PNG, JPG, and GIF images are allowed.',
             'image.max' => 'The uploaded image cannot exceed 2MB in size.',
         ];

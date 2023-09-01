@@ -29,22 +29,37 @@ trait GeneralTrait
     }
 
     // i made that because in every controller i need to return data depend on doctor_id or patient_id or both... so i reduce repetation on my code
-    public function getData(Request $request, $modelName)
+    public function getData(Request $request, $modelName, $flagDate)
     {
         $queryParams = $request->query();
 
         // Define custom error messages
-        $customMessages = [
-            'doctor_id.*' => 'You are not authorized to access this information.',
-            'patient_id.*' => 'You are not authorized to access this information.',
-        ];
+        if ($flagDate) {
+            $customMessages = [
+                'doctor_id.*' => 'You are not authorized to access this information.',
+                'patient_id.*' => 'You are not authorized to access this information.',
+                'date.required' => 'Please choose the date',
+                'date.date' => 'Uncorrect format for date. If you think there is something worng please connect the admins.'
+            ];
 
-        // Validate input parameters
-        $validator = Validator::make($queryParams, [
-            'doctor_id' => 'sometimes|required_without:patient_id|exists:doctors,id',
-            'patient_id' => 'sometimes|required_without:doctor_id|exists:patients,id',
-        ], $customMessages);
+            // Validate input parameters
+            $validator = Validator::make($queryParams, [
+                'doctor_id' => 'sometimes|required_without:patient_id|exists:doctors,id',
+                'patient_id' => 'sometimes|required_without:doctor_id|exists:patients,id',
+                'date' => 'required|date'
+            ], $customMessages);
+        } else {
+            $customMessages = [
+                'doctor_id.*' => 'You are not authorized to access this information.',
+                'patient_id.*' => 'You are not authorized to access this information.',
+            ];
 
+            // Validate input parameters
+            $validator = Validator::make($queryParams, [
+                'doctor_id' => 'sometimes|required_without:patient_id|exists:doctors,id',
+                'patient_id' => 'sometimes|required_without:doctor_id|exists:patients,id',
+            ], $customMessages);
+        }
         if ($validator->fails()) {
             return $this->returnError($validator->errors());
         }
@@ -60,7 +75,9 @@ trait GeneralTrait
             if (isset($queryParams['patient_id'])) {
                 $data->where('patient_id', $queryParams['patient_id']);
             }
-
+            if (isset($queryParams['date'])) {
+                $data->where('date', $queryParams['date']);
+            }
             $data = $data->get();
             return $this->returnData('data', $data);
         }
@@ -82,6 +99,11 @@ trait GeneralTrait
         }
 
         $data = $model::find($dataId);
+
+        if (isset($data->image) && $data->image !== 'images/meals/food.jpg') {
+            $this->deleteImage($data->image);
+        }
+
         $data->delete();
         $lastPosition = strrpos($model, DIRECTORY_SEPARATOR);
         $substring = substr($model, $lastPosition + 1);
@@ -107,6 +129,14 @@ trait GeneralTrait
 
         $data = $model::where($IdName, $dataId)->get();
         return $this->returnData('data', $data);
+    }
+    public function deleteImage($imagePath)
+    {
+        $publicPath = public_path($imagePath);
+
+        if (file_exists($publicPath)) {
+            unlink($publicPath);
+        }
     }
 }
 ?>

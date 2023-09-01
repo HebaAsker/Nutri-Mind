@@ -14,32 +14,32 @@ class DoctorWorkTimeRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
-            'doctor_id' => 'required|integer|exists:doctors,id',
-            'available_times' => 'array',
-            'available_times.*' => 'string|regex:/^[0-2][0-9]:[0-5][0-9]$/|unique:doctor_work_times,date,time'
+            'day_name' => 'required|string|unique:doctor_work_times,day_name,finish_time,start_time,doctor_id',
+            'start_time' => 'required|date_format:H:i:s',
+            'finish_time' => 'required|date_format:H:i:s',
+            'status' => 'required|in:set,not set',
+            'doctor_id' => 'required|integer|exists:doctors,id'
         ];
     }
+
     public function messages(): array
     {
         return [
-            'date.required' => 'The date field is required.',
-            'date.date' => 'Please enter a valid date.',
+            'day_name.required' => 'Please choose day to set these work time in.',
+            'day_name.date' => 'You are not authorized to access this information.If you think that there is any thing wrong please connect the admins.',
+            'start_time.required' => 'The start time field is required.',
+            'start_time.date_format' => 'Invalid time format. Please enter a time in the format HH:MM.',
+            'finish_time.required' => 'The finish time field is required.',
+            'finish_time.date_format' => 'Invalid time format. Please enter a time in the format HH:MM.',
+            'status.required' => 'The status field is required.',
+            'status.in' => 'The status must be one of the following: set, not set.',
             'doctor_id.required' => 'Please select doctor.',
             'doctor_id.integer' => 'You are not authorized to access this information.',
             'doctor_id.exists' => 'The selected doctor does not exist.',
-            'available_times.array' => 'The available times must be an array.',
-            'available_times.*.string' => 'Each available time must be a string.',
-            'available_times.*.regex' => 'Invalid time format. Please enter a time in the format HH:MM.',
-            'available_times.*.unique' => 'The selected time slot is already taken for the specified date.',
+            'day_name.unique' => 'The selected day, finish time, and start time combination is already taken.',
         ];
     }
 }

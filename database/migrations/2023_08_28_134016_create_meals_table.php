@@ -21,7 +21,7 @@ return new class extends Migration
             $table->time('time');
             $table->date('date');
             $table->enum('type',['dinner','breakfast','lunch']);
-            $table->string('image')->nullable();
+            $table->string('image')->default('images/meals/food.jpg');
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

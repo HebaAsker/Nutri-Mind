@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('doctor_work_times', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->time('time')->format('H:i:s');
+            $table->date('day_name');
+            $table->time('start_time')->format('H:i:s');
+            $table->time('finish_time')->format('H:i:s');
             $table->enum('status', ['set', 'not set'])->default('not set');
             $table->foreignId('doctor_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-            $table->unique(['date', 'time','id']);
+            $table->unique(['day_name', 'start_time','doctor_id']);
         });
     }
 
