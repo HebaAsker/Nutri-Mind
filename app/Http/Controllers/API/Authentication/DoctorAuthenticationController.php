@@ -4,23 +4,16 @@ namespace App\Http\Controllers\API\Authentication;
 
 
 use App\Models\Doctor;
-use App\Notifications\OTP;
-use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Requests\DoctorLoginRequest;
-use GuzzleHttp\Exception\ClientException;
-use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Interfaces\Authentication\DoctorAuthRepositoryInterface;
 
 class DoctorAuthenticationController extends Controller
 {
-    use ImageTrait;  // Store image
 
     private $doctorAuthRepository;
 

@@ -4,6 +4,7 @@ namespace App\Repository\Authentication;
 
 use App\Models\Patient;
 use App\Notifications\OTP;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ use App\Interfaces\Authentication\PatientAuthRepositoryInterface;
 
 class PatientAuthRepository implements PatientAuthRepositoryInterface
 {
+    use ImageTrait;  // Store image
     public function register(Request $request) {
 
         $file_name = $this->saveImage($request->image, 'images/profileImages');
@@ -29,6 +31,8 @@ class PatientAuthRepository implements PatientAuthRepositoryInterface
             'weight' => ['required','integer'],
             'age' => ['required','integer'],
             'gender' => ['required', 'string'],
+            'credit_card_number' => ['required', 'string'],
+            'active_status' => ['required'],
         ]);
         //create Patient
         $patient = Patient::create([
@@ -39,7 +43,9 @@ class PatientAuthRepository implements PatientAuthRepositoryInterface
             'height' => $request->height,
             'weight' => $request->weight,
             'age' => $request->age,
-            'gender' => $request->gender
+            'gender' => $request->gender,
+            'credit_card_number' => $request->credit_card_number,
+            'active_status' => $request->active_status,
         ]);
 
         //create token

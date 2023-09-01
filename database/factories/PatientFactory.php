@@ -24,6 +24,8 @@ class PatientFactory extends Factory
             'age' => fake()->randomElement([20,17,15,34,55]),
             'gender' => fake()->randomElement(['male', 'female']),
             'verfication_code' => fake()->randomElement([1025,5592,2173,4687,4255]),
+            'calories' => fake()->randomElement([2006,1592,2173,2687,1255]),
+            'credit_card_number' => fake()->phoneNumber(),
         ];
     }
 }
