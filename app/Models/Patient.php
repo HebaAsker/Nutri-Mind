@@ -3,9 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Chat;
 use App\Models\Note;
-use App\Models\Doctor;
 use App\Models\Review;
 use App\Models\SocialAccount;
 use Laravel\Passport\HasApiTokens;

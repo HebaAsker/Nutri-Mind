@@ -5,11 +5,19 @@ namespace App\Http\Controllers\API\Patient;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
-use Illuminate\Support\Facades\Auth;
+use App\Interfaces\Calories\CaloriesRepositoryInterface;
 
 class PatientController extends Controller
 {
+
+    private $caloriesRepository;
+
+    public function __construct(CaloriesRepositoryInterface $caloriesRepository)
+    {
+        $this->caloriesRepository = $caloriesRepository;
+    }
+
+
     // display some doctors in user home page
     public function index(){
         $doctors = Doctor::paginate(8);
@@ -43,22 +51,11 @@ class PatientController extends Controller
 
     //take patient height and weight then calculate user calories
     public function calculate(){
-        $height = Patient::where('id',Auth::user()->id)->get('height');
-        $weight = Patient::where('id',Auth::user()->id)->get('weight');
-        $age = Patient::where('id',Auth::user()->id)->get('age');
-        $gender = Patient::where('id',Auth::user()->id)->get('gender');
-        if($gender == 'male'){
-            $calories = ($weight*10)+($height*6.25)-($age*5)+5;
-        }else{
-            $calories = ($weight*10)+($height*6.25)-($age*5)-161;
-        }
-        return response([
-            'status' => true,
-            $height,
-            $weight,
-            $age,
-            $gender,
-            $calories,
-        ]);
+        return $this->caloriesRepository->calculate();
+    }
+
+    // Recommend calories patient need to loos or gain weight
+    public function recommendedCalories(){
+        return $this->caloriesRepository->recommendedCalories();
     }
 }

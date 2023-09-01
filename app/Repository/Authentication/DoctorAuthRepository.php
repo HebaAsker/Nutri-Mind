@@ -4,6 +4,7 @@ namespace App\Repository\Authentication;
 
 use App\Models\Doctor;
 use App\Notifications\OTP;
+use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,8 @@ use App\Interfaces\Authentication\DoctorAuthRepositoryInterface;
 
 class DoctorAuthRepository implements DoctorAuthRepositoryInterface
 {
+    use ImageTrait;  // Store image
+
     public function register(Request $request) {
 
         $file_name = $this->saveImage($request->image, 'images/profileImages');
@@ -32,6 +35,7 @@ class DoctorAuthRepository implements DoctorAuthRepositoryInterface
             'qualification' => ['required', 'string'],
             'experience_years' => ['required', 'integer'],
             'gender' => ['required', 'string'],
+            'credit_card_number' => ['required', 'integer'],
         ]);
 
         //create doctor
@@ -45,6 +49,7 @@ class DoctorAuthRepository implements DoctorAuthRepositoryInterface
             'qualification' => $request->qualification,
             'experience_years' => $request->experience_years,
             'gender' => $request->gender,
+            'credit_card_numder' => $request->credit_card_numder,
         ]);
 
         //create token

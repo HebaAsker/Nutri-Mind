@@ -22,13 +22,14 @@ use App\Http\Controllers\API\Patient\QuestionnaireController;
 
 //--------------------------------Routes for patient app features--------------------------------//
 Route::middleware('auth:patient')->group(function () {
-    Route::get('/doctors', [PatientController::class, 'index'])->name('desplay_doctors');
+    Route::get('/doctors', [PatientController::class, 'index'])->name('display_doctors');
     Route::get('/doctor/{id}', [PatientController::class, 'show'])->name('doctor_profile');
     Route::get('/doctors/search', [PatientController::class, 'search'])->name('find_doctor');
     Route::get('/qoutes', [QouteController::class, 'index'])->name('get_qoutes');
-    Route::get('/questions',[QuestionnaireController::class,'show']);
+    Route::get('/questions',[QuestionnaireController::class,'show'])->name('display_questions');
     Route::post('/answer/questions',[QuestionnaireController::class,'answer']);
     Route::get('/calories',[PatientController::class,'calculate']);
+    Route::get('/recommended-calories',[PatientController::class,'recommendedCalories']);
 });
 //------------------------------End Routes for patient app features------------------------------//
 
