@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewRequest;
 use App\Traits\GeneralTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Doctor;
@@ -18,19 +19,7 @@ class ReviewController extends Controller
      */
     public function index(Request $request)
     {
-        $reviews = Review::all();
-
-        $queryParams = $request->query();
-
-        // i make it in that way so i can
-        // return specific doctor's review
-        // return review for specific patient to specific doctor
-        foreach ($queryParams as $key => $value) {
-            $reviews = $reviews->where($key, $value);
-        }
-
-        return $this->returnData('reviews', $reviews);
-        // return view('reviews.index',compact('reviews'));
+        $this->getData($request, 'App\Models\Review');
     }
 
     /**
@@ -38,32 +27,20 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        return view('reviews.create');
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ReviewRequest $request)
     {
-        // Validation rules
-        $rules = [
-            'doctor_id' => 'required|integer|exists:doctors,id',
-            'patient_id' => 'required|integer|exists:patients,id',
-            'rate' => 'required|integer|between:1,5'
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->returnError($validator->errors());
-        }
-
+        $validated=$request->validated();
         try {
             // if already rated => update
             $review = Review::where(
-                $request->only(['doctor_id','patient_id'])
-                )->firstOrFail();
+                $request->only(['doctor_id', 'patient_id'])
+            )->firstOrFail();
 
             $review->update([
                 'rate' => $request->rate
@@ -104,18 +81,8 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        // Validation rules
-        $rules = [
-            'doctor_id' => 'required|integer|exists:doctors,id',
-            'patient_id' => 'required|integer|exists:patients,id',
-            'rate' => 'required|integer|between:1,5'
-        ];
+        $validated=$request->validated();
 
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return $this->returnError($validator->errors());
-        }
         $review->update(
             $request->all()
         );
@@ -128,9 +95,8 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Review $review)
+    public function destroy($reviewId)
     {
-        $review->delete();
-        return $this->returnSuccess('Review ddeleted successfully.');
+        $this->destroyData($reviewId,'App\Models\Review','reviews');
     }
 }

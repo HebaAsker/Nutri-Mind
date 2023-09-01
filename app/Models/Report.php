@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DoctorWorkTime extends Model
+class Report extends Model
 {
     use HasFactory;
-    protected $fillable=['date','time','status','doctor_id'];
+    protected $fillable=['diagnosis_of_his_state','description','appointment_id'];
     public function appointment(): BelongsTo
     {
         return $this->belongsTo(Appointment::class);
     }
+
 }

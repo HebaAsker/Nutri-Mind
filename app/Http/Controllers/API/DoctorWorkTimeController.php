@@ -22,8 +22,8 @@ class DoctorWorkTimeController extends Controller
         'date.required'=> 'You must choose date.',
         'date.date'=>"The date must be a valid date.",
         'doctor_id.required' => 'Please select doctor.',
-        'doctor_id.integer' => 'Unauthorized Access.',
-        'doctor_id.exists' => 'The selected doctor does not exist.',
+        'doctor_id.integer' => 'You are not authorized to access this information.',
+        'doctor_id.exists' => 'The selected doctor does not exist.If you think that there is something wrong please connect the admins',
         ];
 
     $validator = Validator::make($request->only(['date','doctor_id']), $rules,$messages);

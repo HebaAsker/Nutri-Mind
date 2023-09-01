@@ -1,6 +1,11 @@
 <?php
 
-
+use App\Http\Controllers\API\GameController;
+use App\Http\Controllers\API\PatientSavedMealController;
+use App\Http\Controllers\API\PatientSelectedMealController;
+use App\Http\Controllers\API\PatientSuggestedMealController;
+use App\Http\Controllers\API\ReportController;
+use App\Http\Controllers\SuggestedMealController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\NoteController;
@@ -11,6 +16,7 @@ use App\Http\Controllers\API\AppointmentController;
 use App\Http\Controllers\API\Patient\QouteController;
 use App\Http\Controllers\API\DoctorWorkTimeController;
 use App\Http\Controllers\API\MealController;
+use App\Http\Controllers\API\MoodController;
 use App\Http\Controllers\API\Patient\PatientController;
 use App\Http\Controllers\API\Patient\QuestionnaireController;
 
@@ -61,3 +67,14 @@ Route::resource('doctor_work_times', DoctorWorkTimeController::class);
 Route::resource('payment', PaymentController::class);
 Route::resource('appointment', AppointmentController::class);
 Route::resource('meals',MealController::class);
+Route::resource('moods',MoodController::class);
+Route::resource('patient_saved_meals',PatientSavedMealController::class);
+Route::resource('patient_suggested_meals',PatientSuggestedMealController::class);
+Route::resource('patient_selected_meals',PatientSelectedMealController::class);
+Route::resource('suggested_meals',SuggestedMealController::class);
+Route::resource('game',GameController::class);
+Route::resource('reports',ReportController::class);
+Route::get('patient_info/{appointment_id}',[AppointmentController::class,'patient_info']);
+
+
+
