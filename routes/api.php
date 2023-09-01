@@ -75,6 +75,7 @@ Route::resource('suggested_meals',SuggestedMealController::class);
 Route::resource('game',GameController::class);
 Route::resource('reports',ReportController::class);
 Route::get('patient_info/{appointment_id}',[AppointmentController::class,'patient_info']);
+Route::get('serch_for_note',[NoteController::class,'search']);
 
 
 
