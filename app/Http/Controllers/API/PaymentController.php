@@ -24,26 +24,12 @@ class PaymentController extends Controller
         return $this->returnSuccess('Payment created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Payment $payment)
+    public function edit($paymentId)
     {
-        return $this->returnData('payment', $payment);
+        return $this->viewOne($paymentId,'App\Models\Payment','payments','id');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payment $payment)
-    {
-        return $this->returnData('payment', $payment);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Payment $payment)
+    public function update(PaymentRequest $request, Payment $payment)
     {
         $validated=$request->validated();
 
@@ -53,12 +39,4 @@ class PaymentController extends Controller
         return $this->returnSuccess('Payment updated successfully.');
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($paymentId)
-    {
-        return $this->destroyData($paymentId,'App\Models\Payment','payments');
-    }
 }
