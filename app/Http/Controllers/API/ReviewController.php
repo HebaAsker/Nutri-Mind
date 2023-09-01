@@ -19,7 +19,7 @@ class ReviewController extends Controller
      */
     public function index(Request $request)
     {
-        $this->getData($request, 'App\Models\Review');
+        $this->getData($request, 'App\Models\Review',false);
     }
 
     /**
