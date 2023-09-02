@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('image')->default('profile.png');
             $table->string('qualification');
             $table->integer('experience_years');
+            $table->integer('rate');
             $table->string('verfication_code');
             $table->dateTime('expire_at')->nullable();
             $table->string('password');

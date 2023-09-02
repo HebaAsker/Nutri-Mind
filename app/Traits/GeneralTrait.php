@@ -115,7 +115,7 @@ trait GeneralTrait
         $substring = ucfirst(strtolower($substring));
         return $this->returnSuccess("$substring deleted successfully.");
     }
-    public function viewOne($dataId, $model, $tableName, $IdName)
+    public function viewOne($dataId, $model, $tableName, $IdName,$viewOnlyOne=false,$viewOnlyName='')
     {
         $validator = Validator::make(['id' => $dataId], [
             'id' => "required|integer|exists:$tableName,$IdName",
@@ -126,8 +126,14 @@ trait GeneralTrait
         if ($validator->fails()) {
             return $this->returnError($validator->errors());
         }
-
-        $data = $model::where($IdName, $dataId)->get();
+        $data = $model::where($IdName, $dataId);
+        if($viewOnlyOne)
+        {
+            $data=$data->get($viewOnlyName);
+        }
+        else{
+            $data=$data->get('*');
+        }
         return $this->returnData('data', $data);
     }
     public function deleteImage($imagePath)
