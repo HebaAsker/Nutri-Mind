@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
-use App\Models\DoctorWorkTime;
+use App\Models\DoctorsetTime;
 use App\Models\Patient;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
@@ -30,7 +30,7 @@ class AppointmentController extends Controller
             return $this->returnError($validator->errors());
         }
 
-        $appointments = Appointment::join('doctor_work_times', 'appointments.doctor_work_time_id', '=', 'doctor_work_times.id')
+        $appointments = Appointment::join('doctor_set_times', 'appointments.doctor_set_time_id', '=', 'doctor_set_times.id')
             ->join('patients', 'appointments.patient_id', '=', 'patients.id')
             ->join('reports', 'appointments.id', '=', 'reports.appointment_id')
             ->where('appointments.doctor_id', $request->doctor_id)
@@ -54,7 +54,7 @@ class AppointmentController extends Controller
         $validated = $request->validated();
 
         Appointment::create($request->except(['age']));
-        DoctorWorkTime::where('id', $request->doctor_work_time_id)->update([
+        DoctorsetTime::where('id', $request->doctor_set_time_id)->update([
             'status' => 'set'
         ]);
         $patinet = Patient::where('id', $request->patient_id);
@@ -77,7 +77,7 @@ class AppointmentController extends Controller
             return $this->returnError($validator->errors());
         }
 
-        $info = Appointment::join('doctor_work_times', 'appointments.doctor_work_time_id', '=', 'doctor_work_times.id')
+        $info = Appointment::join('doctor_set_times', 'appointments.doctor_set_time_id', '=', 'doctor_set_times.id')
             ->join('patients', 'appointments.patient_id', '=', 'patients.id')
             ->join('reports', 'appointments.id', '=', 'reports.appointment_id')
             ->orderBy('date')
