@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Payment;
 use App\Models\Review;
 use App\Models\SocialAccount;
 use Laravel\Passport\HasApiTokens;
@@ -40,6 +41,23 @@ class Doctor extends Authenticatable
     public function reviews() : HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function appointment() : HasMany
+    {
+        return $this->hasMany(Appointment::class);
+    }
+    public function doctorSetTime(): HasMany
+    {
+        return $this->hasMany(DoctorSetTime::class);
+    }
+    public function doctorWorkTime(): HasMany
+    {
+        return $this->hasMany(DoctorWorkTime::class);
+    }
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function generateOtpCode(){

@@ -3,7 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Meal;
 use App\Models\Note;
+use App\Models\PatientSavedMeal;
+use App\Models\PatientSelectedMeal;
+use App\Models\PatientSuggestedMeal;
 use App\Models\Review;
 use App\Models\SocialAccount;
 use Laravel\Passport\HasApiTokens;
@@ -57,6 +61,30 @@ class Patient extends Authenticatable
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
+    }
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class);
+    }
+    public function meals(): HasMany
+    {
+        return $this->hasMany(Meal::class);
+    }
+    public function patinetSuggestedMeals(): HasMany
+    {
+        return $this->hasMany(PatientSuggestedMeal::class);
+    }
+    public function patinetSavedMeals(): HasMany
+    {
+        return $this->hasMany(PatientSavedMeal::class);
+    }
+    public function patinetSelectedMeals(): HasMany
+    {
+        return $this->hasMany(PatientSelectedMeal::class);
+    }
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 
 }
