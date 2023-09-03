@@ -18,7 +18,7 @@ class MoodController extends Controller
      */
     public function index()
     {
-        $moods = Mood::all();
+        $moods = Mood::all('*');
         return $this->returnData('Moods', $moods);
     }
 

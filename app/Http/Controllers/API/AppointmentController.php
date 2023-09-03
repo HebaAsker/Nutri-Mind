@@ -23,7 +23,8 @@ class AppointmentController extends Controller
             'date' => 'required|date',
         ], [
             'doctor_id.*' => 'You are not authorized to access this information.',
-            'date.*' => 'You are not authorized to access this information.'
+            'date.required' => 'Please selecet the date.',
+            'date.date'=>'The date format is incorrect.If you think there as something wrong please connect the admins.'
         ]);
 
         if ($validator->fails()) {

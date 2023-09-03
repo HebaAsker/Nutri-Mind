@@ -44,9 +44,9 @@ class ReportController extends Controller
     public function show($appointmentId)
     {
         $validator = Validator::make(['id' => $appointmentId], [
-            'id' => "integer",
+            'id' => "required|integer",
         ], [
-            'id.integer' => 'You are not authorized to access this information.'
+            'id.*' => 'You are not authorized to access this information.'
         ]);
 
         if ($validator->fails()) {
