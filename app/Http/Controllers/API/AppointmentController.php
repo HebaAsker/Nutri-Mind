@@ -32,18 +32,17 @@ class AppointmentController extends Controller
 
         $appointments = Appointment::join('doctor_set_times', 'appointments.doctor_set_time_id', '=', 'doctor_set_times.id')
             ->join('patients', 'appointments.patient_id', '=', 'patients.id')
-            ->join('reports', 'appointments.id', '=', 'reports.appointment_id')
+            ->leftJoin('reports', 'appointments.id', '=', 'reports.appointment_id')
             ->where('appointments.doctor_id', $request->doctor_id)
             ->where('date', $request->date)
             ->orderBy('time')
             ->get([
-                "full_name",
-                "time",
-                "diagnosis_of_his_state",
-                "description",
-                "appointment_id"
+                'full_name',
+                'time',
+                'diagnosis_of_his_state',
+                'description',
+                'appointment_id'
             ]);
-
         return $this->returnData('appointments', $appointments);
     }
 
@@ -65,9 +64,9 @@ class AppointmentController extends Controller
         return $this->returnSuccess('Appointemnt added successfully.');
     }
 
-    public function patient_info($appointmentId)
+    public function patient_info($patientId)
     {
-        $validator = Validator::make(['id' => $appointmentId], [
+        $validator = Validator::make(['id' => $patientId], [
             'id' => "integer",
         ], [
             'id.integer' => 'You are not authorized to access this information.'
@@ -80,16 +79,16 @@ class AppointmentController extends Controller
         $info = Appointment::join('doctor_set_times', 'appointments.doctor_set_time_id', '=', 'doctor_set_times.id')
             ->join('patients', 'appointments.patient_id', '=', 'patients.id')
             ->join('reports', 'appointments.id', '=', 'reports.appointment_id')
-            ->orderBy('date')
-            ->where('appointments.id', $appointmentId)
+            ->where('patients.id', $patientId)
+            ->orderByDesc('time')
             ->first([
-                "full_name",
-                "time",
-                "age",
-                "gender",
-                "diagnosis_of_his_state",
-                "description",
-                "appointment_id"
+                'full_name',
+                'time',
+                'age',
+                'gender',
+                'diagnosis_of_his_state',
+                'description',
+                'appointment_id'
             ]);
         return $this->returnData('info', $info);
     }

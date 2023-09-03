@@ -16,15 +16,26 @@ class ReportController extends Controller
     public function store(ReportRequest $request)
     {
         $validated = $request->validated();
-        Report::create($request->all());
-        return $this->returnSuccess('Report added successfully.');
+        $appointmentId = $validated['appointment_id'];
+
+        $report = Report::where('appointment_id', $appointmentId)->first();
+
+        if ($report) {
+            // Update the existing report
+            $report->update($validated);
+            return $this->returnSuccess('Report updated successfully.');
+        } else {
+            // Create a new report
+            Report::create($validated);
+            return $this->returnSuccess('Report added successfully.');
+        }
     }
 
     public function update(ReportRequest $request, $reportId)
     {
         $validated = $request->validated();
-        $report=Report::find($reportId);
-        $report->update($request->only(['diagnosis_of_his_state','description']));
+        $report = Report::find($reportId);
+        $report->update($request->only(['diagnosis_of_his_state', 'description']));
         return $this->returnSuccess('Report updated successfully.');
     }
 
