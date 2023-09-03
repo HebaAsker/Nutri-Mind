@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\DoctorSetTimeController;
 use App\Http\Controllers\API\GameController;
 use App\Http\Controllers\API\PatientSavedMealController;
 use App\Http\Controllers\API\PatientSelectedMealController;
@@ -64,6 +65,7 @@ Route::middleware('auth')->group(function () {
 Route::resource('notes', NoteController::class);
 Route::resource('reviews', ReviewController::class);
 Route::resource('doctor_work_times', DoctorWorkTimeController::class);
+Route::resource('doctor_set_times', DoctorSetTimeController::class);
 Route::resource('payment', PaymentController::class);
 Route::resource('appointment', AppointmentController::class);
 Route::resource('meals',MealController::class);

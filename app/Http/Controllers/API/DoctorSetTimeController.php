@@ -3,65 +3,46 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DoctorSetTimeIndexRequest;
 use App\Models\DoctorSetTime;
+use App\Models\DoctorWorkTime;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class DoctorSetTimeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    use GeneralTrait;
+    public function index(DoctorSetTimeIndexRequest $request)
     {
-        //
-    }
+        $validated = $request->validated();
+        $date = $request->date;
+        $dayName = date('l', strtotime($date));
+        $times = DoctorSetTime::where('doctor_id', $request->doctor_id)->where('date', $date)->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        if ($times->isEmpty()) {
+            $doctorWorkTime = DoctorWorkTime::where('doctor_id', $request->doctor_id)->where('day_name', $dayName)->first();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    
-    public function store(Request $request)
-    {
+            if ($doctorWorkTime) {
+                $startTime = Carbon::parse($doctorWorkTime->start_time);
+                $finishTime = Carbon::parse($doctorWorkTime->finish_time);
+                $current = $startTime->copy();
 
-    }
+                while ($current <= $finishTime) {
+                    DoctorSetTime::create([
+                        'date' => $date,
+                        'time' => $current->format('H:i'),
+                        'doctor_id' => $request->doctor_id
+                    ]);
+                    $current->addMinutes(30);
+                }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DoctorSetTime $doctorSetTime)
-    {
-        //
-    }
+                $times = DoctorSetTime::where('doctor_id', $request->doctor_id)->where('date', $date)->where('status', 'not set')->get();
+            }
+        } else {
+            $times = $times->where('status', 'not set');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DoctorSetTime $doctorSetTime)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, DoctorSetTime $doctorSetTime)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DoctorSetTime $doctorSetTime)
-    {
-        //
+        return $this->returnData('available times', $times);
     }
 }
