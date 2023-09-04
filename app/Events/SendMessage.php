@@ -23,13 +23,12 @@ class SendMessage implements ShouldBroadcast
         $this->chat = $chat;
 
     }
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
+
     public function broadcastOn()
     {
-        return new PrivateChannel('chat-message.' . $this->chat->patient_id);
+        return [
+            new PrivateChannel('chat-message.' . $this->chat->patient_id),
+            new PrivateChannel('chat-message.' . $this->chat->doctor_id),
+        ];
     }
 }

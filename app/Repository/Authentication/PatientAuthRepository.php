@@ -20,8 +20,10 @@ class PatientAuthRepository implements PatientAuthRepositoryInterface
 {
     use ImageTrait;  // Store image
     public function register(Request $request) {
-
-        $file_name = $this->saveImage($request->image, 'images/profileImages');
+        
+        if ($request->hasFile('image')) {
+            $imagePath = $this->uploadImage($request->file('image'), 'images/profileImages');
+        }
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -39,7 +41,7 @@ class PatientAuthRepository implements PatientAuthRepositoryInterface
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'image' => $file_name,
+            'image' => $imagePath,
             'height' => $request->height,
             'weight' => $request->weight,
             'age' => $request->age,

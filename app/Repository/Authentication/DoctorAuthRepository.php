@@ -23,7 +23,9 @@ class DoctorAuthRepository implements DoctorAuthRepositoryInterface
 
     public function register(Request $request) {
 
-        $file_name = $this->saveImage($request->image, 'images/profileImages');
+        if ($request->hasFile('image')) {
+            $imagePath = $this->uploadImage($request->file('image'), 'images/profileImages');
+        };
 
 
         $request->validate([
@@ -43,7 +45,7 @@ class DoctorAuthRepository implements DoctorAuthRepositoryInterface
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'image' => $file_name,
+            'image' => $imagePath,
             'phone' => $request->phone,
             'national_id'=> $request->national_id,
             'qualification' => $request->qualification,

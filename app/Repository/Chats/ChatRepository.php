@@ -1,6 +1,7 @@
 <?php
 namespace App\Repository\Chats;
 
+use App\Events\SendMessage;
 use App\Models\Chat;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,8 @@ class ChatRepository implements ChatRepositoryInterface
                 'content' => $request->content,
                 'status' => null,
             ]);
+
+            broadcast(new SendMessage($chat))->toOthers();
 
             return $message;
         }
