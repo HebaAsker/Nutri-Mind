@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PatientMealRequest extends FormRequest
+class patientMealIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,13 @@ class PatientMealRequest extends FormRequest
     {
         return [
             'patient_id' => 'required|exists:patients,id',
-            'meal_id' => 'required|exists:suggested_meals,id',
-            'status' => 'in:suggested,selected,saved',
+            'status' => 'required|in:suggested,selected,saved',
         ];
     }
     public function messages(): array
     {
         return [
             'patient_id.*' => 'You are not authorized to access this information.',
-            'meal_id.required' => 'You are not authorized to access this information.',
-            'meal_id.exists' => 'The selected meal is invalid.',
             'status.*'=>'You are not authorized to access this information.'
         ];
     }

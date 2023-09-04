@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PatientSuggestedMeal extends Model
 {
     use HasFactory;
-    protected $fillable=['patient_id','meal_id'];
+    protected $fillable=['patient_id','meal_id','status'];
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
