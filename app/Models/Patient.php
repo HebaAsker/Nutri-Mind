@@ -46,6 +46,10 @@ class Patient extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
     public function generateOtpCode(){
         //when patient login
@@ -53,10 +57,6 @@ class Patient extends Authenticatable
         $this->verfication_code = rand(1000,6000);
         $this->expire_at = now()->addMinutes(5);
         $this->save();
-    }
-    public function appointments(): HasMany
-    {
-        return $this->hasMany(Appointment::class);
     }
 
 }
