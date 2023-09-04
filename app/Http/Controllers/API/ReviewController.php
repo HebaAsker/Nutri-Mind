@@ -14,25 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class ReviewController extends Controller
 {
     use GeneralTrait;
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $this->getData($request, 'App\Models\Review');
+        if(isset($request->id)&&!empty($request->id))
+        return $this->viewOne($request->id, 'App\Models\doctor','doctors','id',true,'rate');
+        else return $this->returnError('You are not authorized to access this information.');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(ReviewRequest $request)
     {
         $validated=$request->validated();
@@ -56,47 +44,5 @@ class ReviewController extends Controller
         Doctor::where('id', $request->doctor_id)->Update(['rate' => $averagerate]);
 
         return $this->returnSuccess('Review added successfully.');
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Review $review)
-    {
-        return $this->returnData('review', $review);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Review $review)
-    {
-        return $this->returnData('review', $review);
-        // return view('reviews.edit',compact('review'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Review $review)
-    {
-        $validated=$request->validated();
-
-        $review->update(
-            $request->all()
-        );
-        $averagerate = Review::where('doctor_id', $request->doctor_id)
-            ->avg('rate');
-        Doctor::where('id', $request->doctor_id)->Update(['rate' => $averagerate]);
-        return $this->returnSuccess('Review updated successfully.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($reviewId)
-    {
-        $this->destroyData($reviewId,'App\Models\Review','reviews');
     }
 }

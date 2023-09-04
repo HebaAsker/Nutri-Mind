@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->decimal('price');
-            $table->enum('status',['paid','not paid','partially paid']);
+            $table->enum('status',['paid','not paid']);
             $table->string('card_number',16);
             $table->string('CVV',3);
             $table->date('ex_date');

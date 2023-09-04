@@ -2,31 +2,43 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\patientMealIndexRequest;
 use App\Http\Requests\PatientMealRequest;
 use App\Models\PatientSuggestedMeal;
-use App\Models\SuggestedMeal;
 use App\Traits\GeneralTrait;
-use App\Traits\MealOperationsTrait;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Validator;
-
 class PatientSuggestedMealController extends Controller
 {
     use GeneralTrait;
-    use MealOperationsTrait;
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(patientMealIndexRequest $request)
     {
-        return $this->view($request,'App\Models\PatientSuggestedMeal');
+        $validated=$request->validated();
+        $meals=PatientSuggestedMeal::where('patient_id',$request->patient_id)->where('status',$request->status)->get();
+        return $this->returnData('meals',$meals);
     }
     public function store(PatientMealRequest $request)
     {
         $validated=$request->validated();
 
-        PatientSuggestedMeal::create($request->only(['patient_id','meal_id']));
+        PatientSuggestedMeal::create($request->all());
+
+        return $this->returnSuccess('Meal added successfully.');
+    }
+    public function update(PatientSuggestedMeal $patientSuggestedMeal)
+    {
+        if($patientSuggestedMeal->status=='suggested')
+        {
+            $patientSuggestedMeal->update(['status'=>'selected']);
+        }else if($patientSuggestedMeal->status=='selected')
+        {
+            $patientSuggestedMeal->update(['status'=>'saved']);
+        }else
+        {
+            $patientSuggestedMeal->update(['status'=>'suggested']);
+        }
 
         return $this->returnSuccess('Meal added successfully.');
     }

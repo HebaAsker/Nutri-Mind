@@ -16,7 +16,7 @@ class ReportRequest extends FormRequest
         return [
             'diagnosis_of_his_state' => 'required',
             'description' => 'required',
-            'appointment_id' => 'required',
+            'appointment_id' => 'required|exists:appointments,id',
         ];
     }
 
@@ -26,6 +26,7 @@ class ReportRequest extends FormRequest
             'diagnosis_of_his_state.required' => 'Please add the dianosis of his state.',
             'description.required' => 'Please add description.',
             'appointment_id.required' => 'You are not authorized to access this information.',
+            'appointment_id.exists' => 'The appointment ID does not exist.',
         ];
     }
 }

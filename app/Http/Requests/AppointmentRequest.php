@@ -22,11 +22,11 @@ class AppointmentRequest extends FormRequest
     return [
         'full_name' => 'required|string|max:255',
         'age' => 'required|integer',
-        'doctor_work_time_id' => [
+        'doctor_set_time_id' => [
             'required',
             'integer',
-            'exists:doctor_work_times,id',
-            $appointmentId ? Rule::unique('appointments', 'doctor_work_time_id')->ignore($appointmentId) : 'unique:appointments,doctor_work_time_id'
+            'exists:doctor_set_times,id',
+            $appointmentId ? Rule::unique('appointments', 'doctor_set_time_id')->ignore($appointmentId) : 'unique:appointments,doctor_set_time_id'
         ],
         'doctor_id' => 'required|integer|exists:doctors,id',
         'payment_id' => [
@@ -47,10 +47,10 @@ class AppointmentRequest extends FormRequest
             'full_name.max' => 'The full name field must be less than or equal to 255 characters. Please enter a shorter full name.',
             'age.required' => 'The age field is required. Please enter your age.',
             'age.integer' => 'The age field must be an integer. Please enter a valid age.',
-            'doctor_work_time_id.required' => 'You should choose time for that appointment.',
-            'doctor_work_time_id.integer' => 'You are not authorized to access this information.',
-            'doctor_work_time_id.exists' => 'You are not authorized to access this information.',
-            'doctor_work_time_id.unique' => 'That time is not available. Please choose a different time.',
+            'doctor_set_time_id.required' => 'You should choose time for that appointment.',
+            'doctor_set_time_id.integer' => 'You are not authorized to access this information.',
+            'doctor_set_time_id.exists' => 'You are not authorized to access this information.',
+            'doctor_set_time_id.unique' => 'That time is not available. Please choose a different time.',
             'doctor_id.required' => 'Please choose the doctor you want to see.',
             'doctor_id.integer' => 'You are not authorized to access this information.',
             'doctor_id.exists' => 'You are not authorized to access this information.',

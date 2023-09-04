@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
             $table->foreignId('meal_id')->constrained('suggested_meals')->cascadeOnDelete();
+            $table->enum('status',['suggested','selected','saved'])->default('suggested');
             $table->timestamps();
         });
     }
